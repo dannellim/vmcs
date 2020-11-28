@@ -26,7 +26,7 @@ import vmcs.model.Drink;
  */
 public class MachineryPanelImpl implements MachineryPanel {
 
-    private final HashMap<String, JTextField> drinkQtyTextField;
+    private final HashMap<Integer, JTextField> drinkQtyTextField;
     private final HashMap<String, JTextField> coinQtyTextField;
     private MachineryController machineryController;
 
@@ -92,7 +92,7 @@ public class MachineryPanelImpl implements MachineryPanel {
 
         drinkPanel.add(drinkLabel);
         drinkPanel.add(drinkQty);
-        drinkQtyTextField.put(drink.getName(), drinkQty);
+        drinkQtyTextField.put(drink.hashCode(), drinkQty);
 
     }
 
@@ -119,7 +119,7 @@ public class MachineryPanelImpl implements MachineryPanel {
 
     @Override
     public void updateDrinkUI(Drink drink) {
-        drinkQtyTextField.get(drink.getName()).setText(String.valueOf(drink.getQuantity()));
+        drinkQtyTextField.get(drink.hashCode()).setText(String.valueOf(drink.getQuantity()));
     }
 
     @Override

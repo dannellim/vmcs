@@ -13,6 +13,8 @@ public interface Machine {
 
     public void updateDrinkStock(Drink drink, int qty);
 
+    public void updateDrinkPrice(Drink drink, int price);
+
     public void updateCoinStock(Coin coin, int qty);
 
     public void acceptCoin(Coin coin);

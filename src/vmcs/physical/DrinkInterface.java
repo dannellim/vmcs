@@ -33,6 +33,12 @@ public class DrinkInterface implements Observer {
         drinkInStorage.setQuantity(qty);
     }
 
+    public void updatePriceStock(Drink drink, int price) {
+        Drink drinkInStorage
+                = drinks.get(drinks.indexOf(drink));
+        drinkInStorage.setValue(price);
+    }
+
     @Override
     public void update(Observable observable, Object o) {
         if (observable instanceof Drink) {;

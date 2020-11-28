@@ -281,6 +281,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         drink.setName(key.replace("_", "").toUpperCase());
         drink.setValue(CurrencyHelper.coinsToAmount(price));
         drink.setQuantity(Integer.parseInt(quantity));
+        drink.setId(data[2]);
         System.out.println(drink);
         return drink;
     }

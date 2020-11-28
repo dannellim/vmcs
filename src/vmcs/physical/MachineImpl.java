@@ -83,6 +83,11 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     }
 
     @Override
+    public void updateDrinkPrice(Drink drink, int price) {
+        drinkInterface.updatePriceStock(drink,price);
+    }
+
+    @Override
     public void updateCoinStock(Coin coin, int qty) {
         coinInterface.updateCoinStock(coin, qty);
     }
