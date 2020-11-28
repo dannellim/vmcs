@@ -12,10 +12,6 @@ public interface MaintainerController {
 
     void unlock();
 
-    void showPanel();
-
-    void closePanel();
-
     void logIn();
 
     void unLogIn();
@@ -24,15 +20,11 @@ public interface MaintainerController {
 
     boolean validatePassword(String password);
 
-    void setDrinkStocks(List<Stock> drinkList);
-
-    void setCoinStocks(List<Stock> coinList);
-
     void collectAllCash();
 
     void showTotalCashHeld();
 
-    double getTotalCash(double total);
-
     void changePrice(String newValue);
+    
+    boolean isLock();
 }

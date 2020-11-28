@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vendingmachinecontrolsystem.ui;
+package vmcs.ui;
 
 import vmcs.factory.PropertiesFactory;
 import vmcs.model.Coin;
@@ -24,12 +24,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import vmcs.controller.MaintainerController;
+import vmcs.controller.MaintainerControllerImpl;
 
 /**
  *
  * @author Dannel
  */
-public class MaintenancePanel {
+public class MaintenancePanelImpl implements MaintenancePanel {
 
     /**
      * Creates new form MaintenancePanel
@@ -38,16 +40,17 @@ public class MaintenancePanel {
     private static final String INVALID_PASSWORD = "Invalid Password";
 
     private PropertiesFactory propertiesFactory;
-    private String PASSWORD="123";
-    private boolean isLocked = true;
+    private String PASSWORD = "123";
     private Drink selectedDrink;
+    private MaintainerController maintainerController;
 
-    public MaintenancePanel() {
-    	propertiesFactory = new PropertiesFactory();
-    	PASSWORD = propertiesFactory.getProperty(PropertiesFactory.MACHINE)
-    			.getProperty("password");
+    public MaintenancePanelImpl() {
+        propertiesFactory = new PropertiesFactory();
+        PASSWORD = propertiesFactory.getProperty(PropertiesFactory.MACHINE)
+                .getProperty("password");
         initComponents();
         initTextFieldListner();
+        this.maintainerController = new MaintainerControllerImpl(this);
     }
 
     /**
@@ -225,83 +228,86 @@ public class MaintenancePanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(jFrame.getContentPane());
         jFrame.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(coinPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(drinkPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel7))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(coinPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(drinkPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel4)
+                                                        .addComponent(jLabel7))
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(coinPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(drinkPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(coinPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(drinkPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jFrame.pack();
-		jFrame.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        maintainerController.showTotalCashHeld();
         //MaintainerController.get().showTotalCashHeld();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        maintainerController.showTotalCashHeld();
         jTextField3.setText(jTextField2.getText());
         jTextField2.setText("0 c");
+        maintainerController.collectAllCash();
         //MaintainerController.get().collectAllCash();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        isLocked = true;
-        lock();
+        if (maintainerController.isLock()) {
+            lock();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void changeDrinkPrice(){
-
+    private void changeDrinkPrice() {
+        maintainerController.changePrice(jTextField1.getText());
     }
 
+    @Override
     public void lock() {
         resetPassword();
         jLabel4.setVisible(false);
@@ -316,10 +322,11 @@ public class MaintenancePanel {
         //CustomerControllerImpl.get().enableTransactions();
     }
 
+    @Override
     public void unlock() {
         resetPassword();
         //CustomerControllerImpl.get().terminateTransaction();
-       // MachineryController.get().unLockDoor();
+        // MachineryController.get().unLockDoor();
         jLabel4.setVisible(true);
         coinPanel.setVisible(true);
         jLabel7.setVisible(true);
@@ -332,24 +339,26 @@ public class MaintenancePanel {
         //CustomerControllerImpl.get().disableTransactions();
     }
 
+    @Override
     public void resetPassword() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 jPasswordField1.setText(null);
                 jPasswordField1.setText(null);
-                if(isLocked)
+                if (maintainerController.isLock()) {
                     jLabel3.setText(null);
+                }
                 jLabel6.setText(null);
             }
         });
     }
 
+    @Override
     public void showTotalCashHeld(int total) {
         jTextField2.setText(CurrencyHelper.toCoins(total));
         jTextField3.setText("0 c");
     }
-    
 
 //    private void checkPassword() {
 //        String password = new String(jPasswordField1.getPassword());
@@ -361,16 +370,16 @@ public class MaintenancePanel {
 //            invalidPassword();
 //        }
 //    }
-
+    @Override
     public void validPassword() {
         jLabel3.setText(VALID_PASSWORD);
         jLabel6.setText(null);
-        if (isLocked) {
-            isLocked = false;
+        if (maintainerController.isLock()) {
             unlock();
         }
     }
 
+    @Override
     public void invalidPassword() {
         jLabel3.setText(null);
         jLabel6.setText(INVALID_PASSWORD);
@@ -380,23 +389,27 @@ public class MaintenancePanel {
         jPasswordField1.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
-            	//MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
+                maintainerController.checkPassword(new String(jPasswordField1.getPassword()));
+                //MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-            	//MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
+                maintainerController.checkPassword(new String(jPasswordField1.getPassword()));
+                //MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-            	//MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
+                maintainerController.checkPassword(new String(jPasswordField1.getPassword()));
+                //MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
             }
         });
     }
-    
+
+    @Override
     public void addNewCoins(Coin coin) {
-    	if (!coin.getName().equalsIgnoreCase("Invalid")) {
+        if (!coin.getName().equalsIgnoreCase("Invalid")) {
             JTextField jTextField = new JTextField();
             jTextField.setEditable(false);
             jTextField.setBackground(new java.awt.Color(0, 0, 0));
@@ -418,10 +431,11 @@ public class MaintenancePanel {
             coinPanel.add(jButton);
             coinPanel.add(jTextField);
         }
-	}
+    }
 
-	public void addNewDrink(Drink drink) {
-		JTextField jTextField = new JTextField();
+    @Override
+    public void addNewDrink(Drink drink) {
+        JTextField jTextField = new JTextField();
         jTextField.setEditable(false);
         jTextField.setBackground(new java.awt.Color(0, 0, 0));
         jTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -437,13 +451,14 @@ public class MaintenancePanel {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 drinkButton(jTextField, String.valueOf(drink.getValue()));
-                selectedDrink=drink;
+                selectedDrink = drink;
+                maintainerController.setSelectedDrink(selectedDrink);
             }
         });
 
         drinkPanel.add(jButton);
         drinkPanel.add(jTextField);
-	}
+    }
 
     private void drinkButton(JTextField jTextField, String price) {
         jTextField1.setText(price);
@@ -513,4 +528,20 @@ public class MaintenancePanel {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JFrame jFrame;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void show() {
+        jFrame.setVisible(true);
+    }
+
+    @Override
+    public void hide() {
+        jFrame.setVisible(false);
+    }
+
+    @Override
+    public void refresh() {
+        jFrame.pack();
+        jFrame.setLocationRelativeTo(null);
+    }
 }

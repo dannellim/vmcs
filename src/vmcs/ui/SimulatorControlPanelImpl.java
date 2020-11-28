@@ -29,6 +29,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     private PropertiesFactory propertiesFactory;
     private CustomerPanel customerPanel;
     private MachineryPanel machineryPanel;
+    private MaintenancePanel maintenancePanel;
 
     public SimulatorControlPanelImpl() {
         initComponents();
@@ -145,6 +146,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     private void mainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainButtonActionPerformed
         // TODO add your handling code here:
+        startMain();
     }//GEN-LAST:event_mainButtonActionPerformed
 
     private void custButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_custButtonActionPerformed
@@ -199,7 +201,10 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startMain() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(maintenancePanel == null){
+            maintenancePanel = new MaintenancePanelImpl();
+        }
+        maintenancePanel.show();
     }
 
     @Override
