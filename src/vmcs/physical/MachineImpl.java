@@ -54,6 +54,7 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     public MachineImpl() {
         coinInterfaceListeners = new ArrayList<>();
         drinksInterfaceListeners = new ArrayList<>();
+        doorStateChangeListeners=new ArrayList<>();
         doorState = DoorState.getInstance(this);
     }
 
@@ -152,6 +153,21 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     @Override
     public void dispense(Coin coin) {
         coinInterface.dispense(coin);
+    }
+
+    @Override
+    public boolean isDoorLock() {
+        return doorState.isLocked();
+    }
+
+    @Override
+    public void unlockDoor() {
+         doorState.setLocked(false);
+    }
+
+    @Override
+    public void lockDoor() {
+         doorState.setLocked(true);
     }
 
     @Override

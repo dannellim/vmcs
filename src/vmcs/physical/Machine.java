@@ -29,5 +29,10 @@ public interface Machine {
     
     public void dispense(Coin coin);
 
+    public boolean isDoorLock();
+    public void  unlockDoor();
+    public  void  lockDoor();
+
+
     public void dispense(List<Coin> coins);
 }
