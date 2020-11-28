@@ -7,9 +7,9 @@ import vmcs.model.Drink;
 
 public interface Machine {
 
-    public void addNewCoinInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener);
+    public void addNewCoinInterfaceStatListener(CoinInterface.CoinInterfaceListener coinInterfaceListener);
 
-    public void addNewDrinkInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener);
+    public void addNewDrinkInterfaceStatListener(DrinkInterface.DrinkInterfaceListener drinkInterfaceListener);
 
     public void updateDrinkStock(Drink drink, int qty);
 
@@ -26,4 +26,8 @@ public interface Machine {
     public List<Drink> getAllDrinks();
 
     public List<Coin> getAllCoins();
+    
+    public void dispense(Coin coin);
+
+    public void dispense(List<Coin> coins);
 }

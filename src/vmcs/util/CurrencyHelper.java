@@ -11,27 +11,19 @@ package vmcs.util;
  */
 public class CurrencyHelper {
 
-    public static String toCoins(double amount) {
-        return (int) (amount * 100.0) + " c";
+    public static String toCoins(int amount) {
+        return amount + " c";
     }
 
-    public static double coinsToAmount(String coins) {
-        double results = 0;
+    public static int coinsToAmount(String coins) {
+        int results = 0;
         if (coins.contains("c")) {
             coins = coins.replace("c", "").trim();
-            results = Double.parseDouble(String.format("%.2f", Double.parseDouble(coins) / 100.0));
+            results = Integer.parseInt(coins);
         } else if (coins.contains("$")) {
             coins = coins.replace("$", "");
-            results = Double.parseDouble(String.format("%.2f", Double.parseDouble(coins)));
+            results = Integer.parseInt(coins) * 100;
         }
         return results;
-    }
-
-    public static double subtract(double a, double b) {
-        return Double.parseDouble(String.format("%.2f", (a - b)));
-    }
-
-    public static double add(double a, double b) {
-        return Double.parseDouble(String.format("%.2f", (a + b)));
     }
 }

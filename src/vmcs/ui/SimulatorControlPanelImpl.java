@@ -14,7 +14,6 @@ import vmcs.factory.PropertiesAPI;
 import vmcs.factory.PropertiesFactory;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
-import vmcs.physical.Machine;
 import vmcs.physical.MachineFactory;
 import vmcs.util.CurrencyHelper;
 
@@ -28,7 +27,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
      * Creates new form SimulatorControlPanel
      */
     private PropertiesFactory propertiesFactory;
-    private Machine machine;
+    private CustomerPanel customerPanel;
 
     public SimulatorControlPanelImpl() {
         initComponents();
@@ -148,6 +147,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     private void custButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_custButtonActionPerformed
         // TODO add your handling code here:
+        startCust();
     }//GEN-LAST:event_custButtonActionPerformed
 
     private void endSimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endSimButtonActionPerformed
@@ -198,14 +198,18 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startCust() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (customerPanel == null) {
+            customerPanel = new CustomerPanelImpl();
+            customerPanel.init();
+            customerPanel.refresh();
+        }
+        customerPanel.show();
     }
 
     @Override
     public void beginSim() {
         enableSimulator();
-        machine = MachineFactory.getMachine();
-        machine.initStocks(initCoins(), initDrinks());
+        MachineFactory.getMachine().initStocks(initCoins(), initDrinks());
     }
 
     @Override
@@ -215,6 +219,9 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void endSim() {
+        if (customerPanel != null) {
+            customerPanel.hide();
+        }
         disableSimulator();
         saveProperties();
     }
@@ -238,8 +245,9 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         String quantity = data[1];
         Coin coin = new Coin();
         coin.setName(key);
-        coin.setValue(Double.parseDouble(price));
+        coin.setValue(Integer.parseInt(price));
         coin.setQuantity(Integer.parseInt(quantity));
+        System.out.println(coin.toString());
         return coin;
     }
 
@@ -264,13 +272,14 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         drink.setName(key.replace("_", "").toUpperCase());
         drink.setValue(CurrencyHelper.coinsToAmount(price));
         drink.setQuantity(Integer.parseInt(quantity));
+        System.out.println(drink);
         return drink;
     }
 
     private void saveProperties() {
         if (propertiesFactory != null) {
             Properties coinProp = new Properties();
-            Iterator<Coin> iterator = machine.getAllCoins().iterator();
+            Iterator<Coin> iterator = MachineFactory.getMachine().getAllCoins().iterator();
             while (iterator.hasNext()) {
                 Coin coin = iterator.next();
                 coinProp.put(coin.getName(), coin.getValue() + ";" + coin.getQuantity());
@@ -278,7 +287,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
             propertiesFactory.saveProperties(PropertiesFactory.COIN, coinProp);
             System.out.println(coinProp);
             Properties drinkProp = new Properties();
-            Iterator<Drink> iterator1 = machine.getAllDrinks().iterator();
+            Iterator<Drink> iterator1 = MachineFactory.getMachine().getAllDrinks().iterator();
             while (iterator1.hasNext()) {
                 Drink drink = (Drink) iterator1.next();
                 drinkProp.put(drink.getName(), CurrencyHelper.toCoins(drink.getValue()) + ";" + drink.getQuantity());
