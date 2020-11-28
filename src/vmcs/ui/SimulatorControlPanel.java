@@ -14,11 +14,11 @@ public abstract class SimulatorControlPanel {
 
     public abstract void startMain();
 
-    public abstract void startCust();                                   
+    public abstract void startCust();   
 
-    public abstract void startSim();    
+    public abstract void beginSim();                                 
 
-    public abstract void beginSim();
+    public abstract void endSim();   
     
     public abstract void show();
 }
