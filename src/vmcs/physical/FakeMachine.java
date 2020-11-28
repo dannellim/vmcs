@@ -1,6 +1,5 @@
 package vmcs.physical;
 
-
 import vmcs.model.Coin;
 import vmcs.model.DoorState;
 import vmcs.model.Drink;
@@ -9,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinInterFace.CoinInterfaceListener, Machine, DoorState.DoorStateChangeListener {
-    private CoinInterFace coinInterFace;
+
+    private CoinInterFace coinInterface;
     private DrinkInterface drinkInterface;
 
     private DoorState doorState;
@@ -17,9 +17,9 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
     private List<DrinkInterface.DrinkInterfaceListener> drinksInterfaceListeners;
     private List<DoorState.DoorStateChangeListener> doorStateChangeListeners;
 
-    private static FakeMachine fakeMachine =null;
+    private static FakeMachine fakeMachine = null;
 
-    public FakeMachine getMachineInstance(){
+    public static FakeMachine getMachineInstance() {
         if (fakeMachine == null) {
             synchronized (FakeMachine.class) {
                 if (fakeMachine == null) {
@@ -29,32 +29,39 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
         }
         return fakeMachine;
     }
-    public void addNewCoinInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener){
-        if(coinInterfaceListener!=null){
+
+    @Override
+    public void addNewCoinInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener) {
+        if (coinInterfaceListener != null) {
             this.coinInterfaceListeners.add(coinInterfaceListener);
 
         }
     }
-    public void addDoorStateInterfaceStatListener(DoorState.DoorStateChangeListener doorStateChangeListener){
-        if(doorStateChangeListener!=null){
+
+    @Override
+    public void addDoorStateInterfaceStatListener(DoorState.DoorStateChangeListener doorStateChangeListener) {
+        if (doorStateChangeListener != null) {
             this.doorStateChangeListeners.add(doorStateChangeListener);
 
         }
     }
 
-    public void addNewDrinkInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener){
-        if(coinInterfaceListener!=null){
+    @Override
+    public void addNewDrinkInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener) {
+        if (coinInterfaceListener != null) {
             this.coinInterfaceListeners.add(coinInterfaceListener);
         }
     }
-    public FakeMachine() {
-        List<Coin> coinList=new ArrayList();
-        List<Drink> drinkList=new ArrayList();
-        coinInterfaceListeners=new ArrayList<>();
 
-        coinInterFace=new CoinInterFace(this, coinList);
-        drinkInterface=new DrinkInterface(this,drinkList);
-        doorState=DoorState.getInstance(this);
+    private FakeMachine() {
+        coinInterfaceListeners = new ArrayList<>();
+        doorState = DoorState.getInstance(this);
+    }
+
+    @Override
+    public void initStocks(List<Coin> coins, List<Drink> drinks) {
+        coinInterface = new CoinInterFace(this, coins);
+        drinkInterface = new DrinkInterface(this, drinks);
     }
 
     @Override
@@ -63,18 +70,25 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
             drinkInterfaceListener.onDrinkDispensed(drink);
         });
     }
-    public  void dispenseDrink(Drink drink){
+
+    @Override
+    public void dispenseDrink(Drink drink) {
         drinkInterface.dispenseDrink(drink);
     }
 
-    public void updateDrinkStock(Drink drink,int qty){
-       drinkInterface.updateDrinkStock(drink,qty);
+    @Override
+    public void updateDrinkStock(Drink drink, int qty) {
+        drinkInterface.updateDrinkStock(drink, qty);
     }
-    public void updateCoinStock(Coin coin, int qty){
-        coinInterFace.updateCoinStock(coin,qty);
+
+    @Override
+    public void updateCoinStock(Coin coin, int qty) {
+        coinInterface.updateCoinStock(coin, qty);
     }
-    public  void acceptCoin(Coin coin){
-        coinInterFace.insertCoin(coin);
+
+    @Override
+    public void acceptCoin(Coin coin) {
+        coinInterface.insertCoin(coin);
     }
 
     @Override
@@ -124,5 +138,15 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
         doorStateChangeListeners.forEach(doorStateChangeListener -> {
             doorStateChangeListener.onDoorStateChange(isLock);
         });
+    }
+
+    @Override
+    public List<Drink> getAllDrinks() {
+        return drinkInterface.getDrinkStock();
+    }
+
+    @Override
+    public List<Coin> getAllCoins() {
+        return coinInterface.getCoinStock();
     }
 }

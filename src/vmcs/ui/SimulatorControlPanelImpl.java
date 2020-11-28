@@ -5,18 +5,36 @@
  */
 package vmcs.ui;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import vmcs.factory.PropertiesAPI;
+import vmcs.factory.PropertiesFactory;
+import vmcs.model.Coin;
+import vmcs.model.Drink;
+import vmcs.model.Stock;
+import vmcs.physical.FakeMachine;
+import vmcs.physical.Machine;
+import vmcs.util.CurrencyHelper;
+
 /**
  *
  * @author Dannel
  */
 public class SimulatorControlPanelImpl extends SimulatorControlPanel {
+
     /**
      * Creates new form SimulatorControlPanel
      */
+    private PropertiesFactory propertiesFactory;
+    private Machine machine;
 
     public SimulatorControlPanelImpl() {
         initComponents();
         disableSimulator();
+        propertiesFactory = new PropertiesFactory();
     }
 
     /**
@@ -187,6 +205,8 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     @Override
     public void beginSim() {
         enableSimulator();
+        machine = FakeMachine.getMachineInstance();
+        machine.initStocks(initCoins(), initDrinks());
     }
 
     @Override
@@ -197,5 +217,65 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     @Override
     public void endSim() {
         disableSimulator();
+        saveProperties();
+    }
+
+    private List<Coin> initCoins() {
+        List<Coin> coinStocks = new ArrayList<>();
+        Properties coinProperties = propertiesFactory.getProperty(PropertiesFactory.COIN);
+        Enumeration<String> enums = (Enumeration<String>) coinProperties.propertyNames();
+        while (enums.hasMoreElements()) {
+            String key = enums.nextElement();
+            String value = coinProperties.getProperty(key);
+            String[] data = value.split(PropertiesAPI.SEPERATOR);
+            String price = data[0];
+            String quantity = data[1];
+            Coin coin = new Coin();
+            coin.setName(key);
+            coin.setValue(Double.parseDouble(price));
+            coin.setQuantity(Integer.parseInt(quantity));
+            coinStocks.add(coin);
+        }
+        return coinStocks;
+    }
+
+    private List<Drink> initDrinks() {
+        List<Drink> drinkStocks = new ArrayList<>();
+        Properties drinkProperties = propertiesFactory.getProperty(PropertiesFactory.DRINK);
+        Enumeration<String> enums = (Enumeration<String>) drinkProperties.propertyNames();
+        while (enums.hasMoreElements()) {
+            String key = enums.nextElement();
+            String value = drinkProperties.getProperty(key);
+            String[] data = value.split(PropertiesAPI.SEPERATOR);
+            String price = data[0];
+            String quantity = data[1];
+            Drink drink = new Drink();
+            drink.setName(key.replace("_", "").toUpperCase());
+            drink.setValue(CurrencyHelper.coinsToAmount(price));
+            drink.setQuantity(Integer.parseInt(quantity));
+            drinkStocks.add(drink);
+        }
+        return drinkStocks;
+    }
+
+    private void saveProperties() {
+        if (propertiesFactory != null) {
+            Properties coinProp = new Properties();
+            Iterator<Coin> iterator = machine.getAllCoins().iterator();
+            while (iterator.hasNext()) {
+                Coin coin = iterator.next();
+                coinProp.put(coin.getName(), coin.getValue() + ";" + coin.getQuantity());
+            }
+            propertiesFactory.saveProperties(PropertiesFactory.COIN, coinProp);
+            System.out.println(coinProp);
+            Properties drinkProp = new Properties();
+            Iterator<Drink> iterator1 = machine.getAllDrinks().iterator();
+            while (iterator1.hasNext()) {
+                Drink drink = (Drink) iterator1.next();
+                drinkProp.put(drink.getName(), CurrencyHelper.toCoins(drink.getValue()) + ";" + drink.getQuantity());
+            }
+            propertiesFactory.saveProperties(PropertiesFactory.DRINK, drinkProp);
+            System.out.println(drinkProp);
+        }
     }
 }
