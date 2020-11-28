@@ -299,7 +299,7 @@ public class MaintenancePanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void changeDrinkPrice(){
-        
+
     }
 
     public void lock() {
