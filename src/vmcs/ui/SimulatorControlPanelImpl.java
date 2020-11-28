@@ -14,9 +14,6 @@ import vmcs.factory.PropertiesAPI;
 import vmcs.factory.PropertiesFactory;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
-import vmcs.model.Stock;
-import vmcs.physical.MachineImpl;
-import vmcs.physical.Machine;
 import vmcs.physical.MachineFactory;
 import vmcs.util.CurrencyHelper;
 
@@ -30,7 +27,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
      * Creates new form SimulatorControlPanel
      */
     private PropertiesFactory propertiesFactory;
-    private CustomerController customerController;
+    private CustomerPanel customerPanel;
 
     public SimulatorControlPanelImpl() {
         initComponents();
@@ -150,6 +147,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     private void custButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_custButtonActionPerformed
         // TODO add your handling code here:
+        startCust();
     }//GEN-LAST:event_custButtonActionPerformed
 
     private void endSimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endSimButtonActionPerformed
@@ -200,8 +198,11 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startCust() {
-        customerController = new CustomerControllerImpl();
-        customerController.init();
+        if (customerPanel == null) {
+            customerPanel = new CustomerPanelImpl();
+            customerPanel.init();
+        }
+        customerPanel.show();
     }
 
     @Override
@@ -217,11 +218,11 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void endSim() {
+        if (customerPanel != null) {
+            customerPanel.hide();
+        }
         disableSimulator();
         saveProperties();
-        if (customerController != null) {
-            customerController.close();
-        }
     }
 
     private List<Coin> initCoins() {
@@ -243,7 +244,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         String quantity = data[1];
         Coin coin = new Coin();
         coin.setName(key);
-        coin.setValue(Double.parseDouble(price));
+        coin.setValue(Integer.parseInt(price));
         coin.setQuantity(Integer.parseInt(quantity));
         System.out.println(coin.toString());
         return coin;
