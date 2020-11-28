@@ -190,7 +190,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startMach() {
-        if(machineryPanel == null){
+        if (machineryPanel == null) {
             machineryPanel = new MachineryPanelImpl();
             machineryPanel.refresh();
         }
@@ -288,17 +288,15 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     private void saveProperties() {
         if (propertiesFactory != null) {
             Properties coinProp = new Properties();
-            Iterator<Coin> iterator = MachineFactory.getMachine().getAllCoins().iterator();
-            while (iterator.hasNext()) {
-                Coin coin = iterator.next();
+            List<Coin> coins = MachineFactory.getMachine().getAllCoins();
+            for(Coin coin: coins){
                 coinProp.put(coin.getName(), coin.getValue() + ";" + coin.getQuantity());
             }
             propertiesFactory.saveProperties(PropertiesFactory.COIN, coinProp);
             System.out.println(coinProp);
             Properties drinkProp = new Properties();
-            Iterator<Drink> iterator1 = MachineFactory.getMachine().getAllDrinks().iterator();
-            while (iterator1.hasNext()) {
-                Drink drink = (Drink) iterator1.next();
+            List<Drink> drinks = MachineFactory.getMachine().getAllDrinks();
+            for (Drink drink : drinks) {
                 drinkProp.put(drink.getName(), CurrencyHelper.toCoins(drink.getValue()) + ";" + drink.getQuantity());
             }
             propertiesFactory.saveProperties(PropertiesFactory.DRINK, drinkProp);
