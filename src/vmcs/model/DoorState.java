@@ -26,6 +26,7 @@ public class DoorState  {
 
 	public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
+                doorStateChangeListener.onDoorStateChange(isLocked);
 	}
 	
 	public interface  DoorStateChangeListener{

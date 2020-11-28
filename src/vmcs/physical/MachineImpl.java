@@ -56,6 +56,7 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
         drinksInterfaceListeners = new ArrayList<>();
         doorStateChangeListeners=new ArrayList<>();
         doorState = DoorState.getInstance(this);
+      
     }
 
     @Override

@@ -15,6 +15,8 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import vmcs.controller.MachineryController;
+import vmcs.controller.MachineryControllerImpl;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
 
@@ -24,9 +26,9 @@ import vmcs.model.Drink;
  */
 public class MachineryPanelImpl implements MachineryPanel {
 
-    private boolean isLocked = true;
-    private HashMap<String, JTextField> drinkQtyTextField;
-    private HashMap<String, JTextField> coinQtyTextField;
+    private final HashMap<String, JTextField> drinkQtyTextField;
+    private final HashMap<String, JTextField> coinQtyTextField;
+    private MachineryController machineryController;
 
     /**
      * Creates new form MachineryPanel
@@ -35,7 +37,8 @@ public class MachineryPanelImpl implements MachineryPanel {
         initComponents();
         drinkQtyTextField = new HashMap<>();
         coinQtyTextField = new HashMap<>();
-//		doorStateCheckBox.setSelected(isLocked);
+        machineryController = new MachineryControllerImpl(this);
+        machineryController.init();
     }
 
     @Override
@@ -240,45 +243,17 @@ public class MachineryPanelImpl implements MachineryPanel {
 
     private void doorStateCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_doorStateCheckBoxItemStateChanged
         // TODO add your handling code here:
-        if (doorStateCheckBox.isSelected() && !isLocked) {
-            //MachineryController.get().lockDoor();
+        if (doorStateCheckBox.isSelected()) {
+            machineryController.lockDoor();
         } else {
-            //MachineryController.get().unLockDoor();
-
+            machineryController.unLockDoor();
         }
-        isLocked = !isLocked;
-
-//		if(evt.getStateChange()== ItemEvent.SELECTED){
-//			MachineryController.get().lockDoor();
-//		}else{
-//			MachineryController.get().unLockDoor();
-//
-//		}
-//		if(isLocked){
-//			MachineryController.get().lockDoor();
-//
-//		}else{
-//			MachineryController.get().lockDoor();
-//
-//		}
-        System.out.println("isLocked: " + isLocked);
 
     }// GEN-LAST:event_doorStateCheckBoxItemStateChanged
 
     @Override
     public void updateDoorLockState(boolean isLocked) {
-//		doorStateCheckBox.setSelected(b);
-        if (isLocked) {
-            if (!doorStateCheckBox.isSelected()) {
-                doorStateCheckBox.setSelected(true);
-
-            }
-        } else {
-            if (doorStateCheckBox.isSelected()) {
-                doorStateCheckBox.setSelected(false);
-
-            }
-        }
+        doorStateCheckBox.setSelected(isLocked);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox doorStateCheckBox;

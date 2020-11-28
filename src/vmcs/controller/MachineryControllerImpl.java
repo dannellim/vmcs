@@ -5,41 +5,36 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import vmcs.model.Coin;
+import vmcs.model.DoorState.DoorStateChangeListener;
 import vmcs.model.Drink;
 import vmcs.model.Stock;
+import vmcs.physical.CoinInterface.CoinInterfaceListener;
+import vmcs.physical.DrinkInterface.DrinkInterfaceListener;
 import vmcs.physical.MachineFactory;
 import vmcs.ui.MachineryPanel;
 import vmcs.ui.MachineryPanelImpl;
 
-public class MachineryControllerImpl implements Observer {
+public class MachineryControllerImpl implements CoinInterfaceListener, DoorStateChangeListener, DrinkInterfaceListener, MachineryController {
 
-    private MachineryPanel machineryPanel;
+    private final MachineryPanel machineryPanel;
 
-    private boolean currentDoorSate;
-
-    public void showPanel() {
-        if (machineryPanel != null) {
-            machineryPanel.show();
-        } else {
-            machineryPanel = new MachineryPanelImpl();
-
-            addDrinksToUI();
-            addCoinsToUI();
-            updateDoorStateToUI();
-            updateUIAccordingToDoorState(doorState);
-
-        }
+    public MachineryControllerImpl(MachineryPanel machineryPanel) {
+        MachineFactory.getMachine().addDoorStateInterfaceStatListener(this);
+        MachineFactory.getMachine().addNewCoinInterfaceStatListener(this);
+        MachineFactory.getMachine().addNewDrinkInterfaceStatListener(this);
+        this.machineryPanel = machineryPanel;
     }
 
-    public void closePanel() {
-        if (machineryPanel != null) {
-            machineryPanel.hide();
-        }
-
+    @Override
+    public void init() {
+        addDrinksToUI();
+        addCoinsToUI();
+        updateDoorStateToUI();
+        updateUIAccordingToDoorState(MachineFactory.getMachine().isDoorLock());
     }
 
     private void updateDoorStateToUI() {
-        machineryPanel.updateDoorLockState(doorState.isLocked());
+        machineryPanel.updateDoorLockState(MachineFactory.getMachine().isDoorLock());
     }
 
     private void addCoinsToUI() {
@@ -60,75 +55,76 @@ public class MachineryControllerImpl implements Observer {
         machineryPanel.refresh();
     }
 
+    @Override
     public void changeDrinkStock(Drink drink, int qty) {
-        if (!doorState.isLocked()) {
+        if (!MachineFactory.getMachine().isDoorLock()) {
             if (qty >= 0 && qty <= 20) {
-                drink.setQuantity(qty);
+                MachineFactory.getMachine().updateDrinkStock(drink, qty);
             }
         }
-    }
-
-    public void changeCoinStock(Coin coin, int qty) {
-        if (!doorState.isLocked()) {
-            if (qty >= 0 && qty <= 40) {
-                coin.setQuantity(qty);
-            }
-        }
-    }
-
-    public void setDoorState(DoorState doorState) {
-        this.doorState = doorState;
     }
 
     @Override
-    public void update(Observable arg0, Object arg1) {
-        //do full panel refresh here
-        System.out.println("---------------------- MachineryController UPDATE Start ----------------------");
-        if (arg0 instanceof Coin) {
-            System.out.println("Coin Update");
-
-            if (machineryPanel != null) {
-                System.out.println("Coin Update");
-
-                Coin coin = (Coin) arg0;
-                machineryPanel.updateCoinUI(coin);
+    public void changeCoinStock(Coin coin, int qty) {
+        if (!MachineFactory.getMachine().isDoorLock()) {
+            if (qty >= 0 && qty <= 40) {
+                MachineFactory.getMachine().updateCoinStock(coin, qty);
             }
-
-        } else if (arg0 instanceof Drink) {
-            System.out.println("Drink MachineryController  Update");
-
-            if (machineryPanel != null) {
-
-                Drink drink = (Drink) arg0;
-                machineryPanel.updateDrinkUI(drink);
-                System.out.println(arg0.toString());
-            }
-
-        } else if (arg0 instanceof DoorState) {
-            if (machineryPanel != null) {
-                updateUIAccordingToDoorState((DoorState) arg0);
-            }
-
         }
-        System.out.println("---------------------- MachineryController UPDATE End ----------------------");
     }
 
-    private void updateUIAccordingToDoorState(DoorState arg0) {
-        machineryPanel.updateDoorLockState(arg0.isLocked());
-        machineryPanel.changeTextFieldState(arg0.isLocked());
+    private void updateUIAccordingToDoorState(boolean arg0) {
+        machineryPanel.updateDoorLockState(arg0);
+        machineryPanel.changeTextFieldState(arg0);
     }
 
+    @Override
     public void lockDoor() {
-        if (MaintainerState.getInstance().isLogIn()) {
-            doorState.setLocked(true);
-        }
+        MachineFactory.getMachine().lockDoor();
     }
 
+    @Override
     public void unLockDoor() {
 
-        if (MaintainerState.getInstance().isLogIn()) {
-            doorState.setLocked(false);
-        }
+        MachineFactory.getMachine().unlockDoor();
+
+    }
+
+    @Override
+    public void onCoinAccepted(Coin coin) {
+    }
+
+    @Override
+    public void onCoinRejected(Coin coin) {
+    }
+
+    @Override
+    public void onCoinDispensed(Coin coin) {
+    }
+
+    @Override
+    public void onCoinDispensed(List<Coin> coin) {
+    }
+
+    @Override
+    public void onCoinStockChanged(Coin coin) {
+        machineryPanel.updateCoinUI(coin);
+
+    }
+
+    @Override
+    public void onDoorStateChange(boolean isLock) {
+        System.out.println("Islocked "+isLock);
+        updateUIAccordingToDoorState(isLock);
+    }
+
+    @Override
+    public void onDrinkDispensed(Drink drink) {
+    }
+
+    @Override
+    public void onDrinkStockChanged(Drink drink) {
+        machineryPanel.updateDrinkUI(drink);
     }
 
 }
