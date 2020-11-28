@@ -11,5 +11,8 @@ package vmcs.model;
  */
 public class Drink extends Stock {
 
+    public void a(){
+        nam
+    }
 
 }
