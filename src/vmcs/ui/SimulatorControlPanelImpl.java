@@ -219,6 +219,9 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     public void endSim() {
         disableSimulator();
         saveProperties();
+        if (customerController != null) {
+            customerController.close();
+        }
     }
 
     private List<Coin> initCoins() {
