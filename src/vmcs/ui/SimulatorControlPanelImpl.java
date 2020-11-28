@@ -16,6 +16,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     public SimulatorControlPanelImpl() {
         initComponents();
+        disableSimulator();
     }
 
     /**
@@ -134,13 +135,15 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     private void endSimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endSimButtonActionPerformed
         // TODO add your handling code here:
+        endSim();
     }//GEN-LAST:event_endSimButtonActionPerformed
 
     private void beginSimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beginSimButtonActionPerformed
         // TODO add your handling code here:
+        beginSim();
     }//GEN-LAST:event_beginSimButtonActionPerformed
 
-    public void enableSimulator() {
+    private void enableSimulator() {
         custButton.setEnabled(true);
         endSimButton.setEnabled(true);
         machButton.setEnabled(true);
@@ -148,7 +151,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         beginSimButton.setEnabled(false);
     }
 
-    public void disableSimulator() {
+    private void disableSimulator() {
         custButton.setEnabled(false);
         endSimButton.setEnabled(false);
         machButton.setEnabled(false);
@@ -182,17 +185,17 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     }
 
     @Override
-    public void startSim() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void beginSim() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        enableSimulator();
     }
 
     @Override
     public void show() {
         jFrame.setVisible(true);
+    }
+
+    @Override
+    public void endSim() {
+        disableSimulator();
     }
 }
