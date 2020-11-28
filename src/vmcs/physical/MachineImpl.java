@@ -7,17 +7,17 @@ import vmcs.model.Drink;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinInterFace.CoinInterfaceListener, Machine, DoorState.DoorStateChangeListener {
+public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinInterface.CoinInterfaceListener, Machine, DoorState.DoorStateChangeListener {
 
-    private CoinInterFace coinInterface;
+    private CoinInterface coinInterface;
     private DrinkInterface drinkInterface;
 
-    private DoorState doorState;
-    private List<CoinInterFace.CoinInterfaceListener> coinInterfaceListeners;
-    private List<DrinkInterface.DrinkInterfaceListener> drinksInterfaceListeners;
+    private final DoorState doorState;
+    private final List<CoinInterface.CoinInterfaceListener> coinInterfaceListeners;
+    private final List<DrinkInterface.DrinkInterfaceListener> drinksInterfaceListeners;
     private List<DoorState.DoorStateChangeListener> doorStateChangeListeners;
 
-    private static MachineImpl fakeMachine = null;
+    private static final MachineImpl fakeMachine = null;
 
 //    public static FakeMachine getMachineInstance() {
 //        if (fakeMachine == null) {
@@ -29,12 +29,10 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
 //        }
 //        return fakeMachine;
 //    }
-
     @Override
-    public void addNewCoinInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener) {
+    public void addNewCoinInterfaceStatListener(CoinInterface.CoinInterfaceListener coinInterfaceListener) {
         if (coinInterfaceListener != null) {
             this.coinInterfaceListeners.add(coinInterfaceListener);
-
         }
     }
 
@@ -47,20 +45,21 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     }
 
     @Override
-    public void addNewDrinkInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener) {
-        if (coinInterfaceListener != null) {
-            this.coinInterfaceListeners.add(coinInterfaceListener);
+    public void addNewDrinkInterfaceStatListener(DrinkInterface.DrinkInterfaceListener drinkInterfaceListener) {
+        if (drinkInterfaceListener != null) {
+            this.drinksInterfaceListeners.add(drinkInterfaceListener);
         }
     }
 
     public MachineImpl() {
         coinInterfaceListeners = new ArrayList<>();
+        drinksInterfaceListeners = new ArrayList<>();
         doorState = DoorState.getInstance(this);
     }
 
     @Override
     public void initStocks(List<Coin> coins, List<Drink> drinks) {
-        coinInterface = new CoinInterFace(this, coins);
+        coinInterface = new CoinInterface(this, coins);
         drinkInterface = new DrinkInterface(this, drinks);
     }
 
@@ -148,5 +147,15 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     @Override
     public List<Coin> getAllCoins() {
         return coinInterface.getCoinStock();
+    }
+
+    @Override
+    public void dispense(Coin coin) {
+        coinInterface.dispense(coin);
+    }
+
+    @Override
+    public void dispense(List<Coin> coins) {
+        coinInterface.dispense(coins);
     }
 }

@@ -6,6 +6,7 @@
 package vmcs.ui;
 
 import java.util.List;
+import vmcs.controller.CustomerController;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
 
@@ -14,20 +15,16 @@ import vmcs.model.Drink;
  * @author Dannel
  */
 public abstract class CustomerPanel {
+    
+    protected CustomerController customerController;
+    
+    public abstract void init();
 
-    public abstract void addNewCoins(Coin coin);
-
-    public abstract void updateInsertedAmount(double amount);
+    public abstract void updateInsertedAmount(int amount);
 
     public abstract void displayInvalidCoin();
 
-    public abstract void enableCoinButtons();
-
     public abstract void disableCoinButtons();
-
-    public abstract void addNewDrink(Drink drink);
-
-    public abstract void setSelectedDrink(Drink drink);
 
     public abstract void disableTransactions();
 
@@ -38,14 +35,16 @@ public abstract class CustomerPanel {
     public abstract String getInsertedAmount();
 
     public abstract void dispenseDrink(Drink drink);
+    
+    public abstract void dispenseChange(Coin coin);
+    
+    public abstract void dispenseChange(List<Coin> coin);
 
-    public abstract void displayChange(double originalChange, double changeAvailable);
+    public abstract void displayChange(int originalChange, int changeAvailable);
 
     public abstract void resetState();
 
     public abstract void enableTerminateButton();
-
-    public abstract void disableTerminateButton();
 
     public abstract void terminateTransaction();
 

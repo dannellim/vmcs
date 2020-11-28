@@ -5,7 +5,11 @@
  */
 package vmcs.controller;
 
+import java.util.List;
+import vmcs.model.Coin;
+import vmcs.model.Drink;
 import vmcs.ui.CustomerPanel;
+
 
 /**
  *
@@ -15,7 +19,17 @@ public abstract class CustomerController {
     
     protected CustomerPanel customerPanel;
     
-    public abstract void init();
+    public CustomerController(CustomerPanel customerPanel){
+        this.customerPanel = customerPanel;
+    }
     
-    public abstract void close();
+    public abstract List<Coin> getCoinStocks();
+    
+    public abstract void insertCoin(Coin coin);
+    
+    public abstract List<Drink> getDrinkStocks();
+    
+    public abstract void selectDrink(Drink drink);
+    
+    public abstract void terminateTransaction();
 }

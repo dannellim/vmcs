@@ -201,6 +201,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         if (customerPanel == null) {
             customerPanel = new CustomerPanelImpl();
             customerPanel.init();
+            customerPanel.refresh();
         }
         customerPanel.show();
     }

@@ -14,7 +14,7 @@ import java.util.Observable;
 public abstract class Stock extends Observable {
 
     private String name;
-    private double value;
+    private int value;
     private int quantity;
 
     public String getName() {
@@ -27,11 +27,11 @@ public abstract class Stock extends Observable {
         notifyObservers();
     }
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(int value) {
         this.value = value;
         setChanged();
         notifyObservers();
@@ -47,17 +47,21 @@ public abstract class Stock extends Observable {
         notifyObservers();
     }
 
-    public void increaseCoin(){
-        setQuantity(this.quantity+1);
-    }
-    public void decreaseCoin(){
-        setQuantity(this.quantity-1);
+    public void increaseStock() {
+        //System.out.println(getQuantity());
+        setQuantity(this.quantity + 1);
+        //System.out.println(getQuantity());
     }
 
+    public void decreaseStock() {
+        //System.out.println(getQuantity());
+        setQuantity(this.quantity - 1);
+        //System.out.println(getQuantity());
+    }
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName()+ "{" + "name=" + name + ", value=" + value + ", quantity=" + quantity + '}';
+        return this.getClass().getSimpleName() + "{" + "name=" + name + ", value=" + value + ", quantity=" + quantity + '}';
     }
 
 //	@Override
@@ -70,13 +74,13 @@ public abstract class Stock extends Observable {
 //		else
 //			return false;
 //	}
-
     public boolean equals(Object obj) {
-           Stock stock = (Stock) obj;
-           if(this.name.equalsIgnoreCase(stock.getName()))
-               return true;
-           else
-               return false;
+        Stock stock = (Stock) obj;
+        if (this.name.equalsIgnoreCase(stock.getName())) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 

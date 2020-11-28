@@ -15,9 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import vmcs.controller.CustomerControllerImpl;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
-import vmcs.physical.MachineFactory;
 import vmcs.util.CurrencyHelper;
 
 /**
@@ -38,9 +38,19 @@ public class CustomerPanelImpl extends CustomerPanel {
     public CustomerPanelImpl() {
         initComponents();
     }
-   
+
     @Override
-    public void addNewCoins(Coin coin) {
+    public void init() {
+        this.customerController = new CustomerControllerImpl(this);
+        for (Coin coin : this.customerController.getCoinStocks()) {
+            addNewCoins(coin);
+        }
+        for (Drink drink : this.customerController.getDrinkStocks()) {
+            addNewDrink(drink);
+        }
+    }
+
+    private void addNewCoins(Coin coin) {
         JButton jButton = new JButton();
         jButton.setFont(new java.awt.Font("Tahoma", 0, 14));
         jButton.setText(coin.getName());
@@ -48,22 +58,25 @@ public class CustomerPanelImpl extends CustomerPanel {
         jButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-
+                customerController.insertCoin(coin);
             }
         });
         coinPanel.add(jButton);
     }
 
-    public void updateInsertedAmount(double amount) {
-        amount = CurrencyHelper.add(amount, CurrencyHelper.coinsToAmount(insertedAmountTf.getText()));
+    @Override
+    public void updateInsertedAmount(int amount) {
+        amount += CurrencyHelper.coinsToAmount(insertedAmountTf.getText());
         insertedAmountTf.setText(CurrencyHelper.toCoins(amount));
+        invalidCoinLabel.setText(null);
     }
 
+    @Override
     public void displayInvalidCoin() {
         invalidCoinLabel.setText(INVALID_COIN_TEXT);
     }
 
-    public void enableCoinButtons() {
+    private void enableCoinButtons() {
         Component[] comp = coinPanel.getComponents();
         for (int i = 0; i < comp.length; i++) {
             if (comp[i] instanceof JButton) {
@@ -91,22 +104,9 @@ public class CustomerPanelImpl extends CustomerPanel {
                 ((JButton) comp[i]).setEnabled(false);
             }
         }
-        comp = drinkPanel.getComponents();
-        for (int i = 0; i < comp.length; i++) {
-            if (comp[i] instanceof JPanel) {
-                Component[] drinkComp = ((JPanel) comp[i]).getComponents();
-                for (int j = 0; j < drinkComp.length; j++) {
-                    if (drinkComp[j] instanceof JButton) {
-                        JButton jButton = ((JButton) drinkComp[j]);
-                        //jButton.setEnabled(CustomerControllerImpl.get().isDrinkAvailable(jButton.getText()));
-                    }
-                }
-            }
-        }
     }
 
-    @Override
-    public void addNewDrink(Drink drink) {
+    private void addNewDrink(Drink drink) {
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new GridLayout());
 
@@ -116,7 +116,8 @@ public class CustomerPanelImpl extends CustomerPanel {
         jButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //CustomerControllerImpl.get().startTransaction(drink);
+                customerController.selectDrink(drink);
+                setSelectedDrink(drink);
             }
         });
 
@@ -143,10 +144,10 @@ public class CustomerPanelImpl extends CustomerPanel {
         jPanel.add(jTextField);
         jPanel.add(jLabel);
         drinkPanel.add(jPanel);
+        
     }
 
-    @Override
-    public void setSelectedDrink(Drink drink) {
+    private void setSelectedDrink(Drink drink) {
         selectedDrinkLabel.setText(drink.getName() + " --- " + CurrencyHelper.toCoins(drink.getValue()));
         coinCollectTf.setText(NO_COINS_TEXT);
         enableCoinButtons();
@@ -195,7 +196,8 @@ public class CustomerPanelImpl extends CustomerPanel {
             jButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
-                    //CustomerControllerImpl.get().startTransaction(drink);
+                    customerController.selectDrink(drink);
+                    setSelectedDrink(drink);
                 }
             });
 
@@ -240,11 +242,25 @@ public class CustomerPanelImpl extends CustomerPanel {
     }
 
     @Override
-    public void displayChange(double originalChange, double changeAvailable) {
+    public void displayChange(int originalChange, int changeAvailable) {
         if (changeAvailable < originalChange) {
             noChangeLabel.setText(INSUFFICIENT_CHANGE_TEXT);
         }
         coinCollectTf.setText(CurrencyHelper.toCoins(changeAvailable));
+    }
+
+    @Override
+    public void dispenseChange(Coin coin) {
+        coinCollectTf.setText(coin.getName());
+    }
+
+    @Override
+    public void dispenseChange(List<Coin> coins) {
+        int amount = 0;
+        for (Coin coin : coins) {
+            amount += coin.getValue();
+        }
+        coinCollectTf.setText(CurrencyHelper.toCoins(amount));
     }
 
     @Override
@@ -266,6 +282,8 @@ public class CustomerPanelImpl extends CustomerPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+	jFrame = new javax.swing.JFrame();
         java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel1 = new javax.swing.JLabel();
@@ -442,16 +460,13 @@ public class CustomerPanelImpl extends CustomerPanel {
     }
 
     @Override
-    public void disableTerminateButton() {
-        terminateButton.setEnabled(false);
-    }
-
-    @Override
     public void terminateTransaction() {
         disableCoinButtons();
         selectedDrinkLabel.setText(null);
         coinCollectTf.setText(insertedAmountTf.getText());
         insertedAmountTf.setText(NO_COINS_TEXT);
+        terminateButton.setEnabled(false);
+        customerController.terminateTransaction();
     }
 
     @Override
@@ -471,8 +486,7 @@ public class CustomerPanelImpl extends CustomerPanel {
     }
 
     private void terminateButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_terminateButtonActionPerformed
-        // TODO add your handling code here:
-        //CustomerControllerImpl.get().terminateTransaction();
+        terminateTransaction();
     }// GEN-LAST:event_terminateButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
