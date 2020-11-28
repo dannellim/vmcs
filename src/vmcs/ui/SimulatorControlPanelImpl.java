@@ -17,6 +17,7 @@ import vmcs.model.Drink;
 import vmcs.model.Stock;
 import vmcs.physical.FakeMachine;
 import vmcs.physical.Machine;
+import vmcs.physical.MachineFactory;
 import vmcs.util.CurrencyHelper;
 
 /**
@@ -205,7 +206,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     @Override
     public void beginSim() {
         enableSimulator();
-        machine = FakeMachine.getMachineInstance();
+        machine = MachineFactory.getMachine();
         machine.initStocks(initCoins(), initDrinks());
     }
 
@@ -225,18 +226,23 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         Properties coinProperties = propertiesFactory.getProperty(PropertiesFactory.COIN);
         Enumeration<String> enums = (Enumeration<String>) coinProperties.propertyNames();
         while (enums.hasMoreElements()) {
-            String key = enums.nextElement();
-            String value = coinProperties.getProperty(key);
-            String[] data = value.split(PropertiesAPI.SEPERATOR);
-            String price = data[0];
-            String quantity = data[1];
-            Coin coin = new Coin();
-            coin.setName(key);
-            coin.setValue(Double.parseDouble(price));
-            coin.setQuantity(Integer.parseInt(quantity));
+            Coin coin = getCoinFromPropertiesValue(coinProperties, enums);
             coinStocks.add(coin);
         }
         return coinStocks;
+    }
+
+    private Coin getCoinFromPropertiesValue(Properties coinProperties, Enumeration<String> enums) {
+        String key = enums.nextElement();
+        String value = coinProperties.getProperty(key);
+        String[] data = value.split(PropertiesAPI.SEPERATOR);
+        String price = data[0];
+        String quantity = data[1];
+        Coin coin = new Coin();
+        coin.setName(key);
+        coin.setValue(Double.parseDouble(price));
+        coin.setQuantity(Integer.parseInt(quantity));
+        return coin;
     }
 
     private List<Drink> initDrinks() {
@@ -244,18 +250,23 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         Properties drinkProperties = propertiesFactory.getProperty(PropertiesFactory.DRINK);
         Enumeration<String> enums = (Enumeration<String>) drinkProperties.propertyNames();
         while (enums.hasMoreElements()) {
-            String key = enums.nextElement();
-            String value = drinkProperties.getProperty(key);
-            String[] data = value.split(PropertiesAPI.SEPERATOR);
-            String price = data[0];
-            String quantity = data[1];
-            Drink drink = new Drink();
-            drink.setName(key.replace("_", "").toUpperCase());
-            drink.setValue(CurrencyHelper.coinsToAmount(price));
-            drink.setQuantity(Integer.parseInt(quantity));
+            Drink drink = getDrinkFromPropertiesValue(drinkProperties, enums);
             drinkStocks.add(drink);
         }
         return drinkStocks;
+    }
+
+    private Drink getDrinkFromPropertiesValue(Properties drinkProperties, Enumeration<String> enums) {
+        String key = enums.nextElement();
+        String value = drinkProperties.getProperty(key);
+        String[] data = value.split(PropertiesAPI.SEPERATOR);
+        String price = data[0];
+        String quantity = data[1];
+        Drink drink = new Drink();
+        drink.setName(key.replace("_", "").toUpperCase());
+        drink.setValue(CurrencyHelper.coinsToAmount(price));
+        drink.setQuantity(Integer.parseInt(quantity));
+        return drink;
     }
 
     private void saveProperties() {

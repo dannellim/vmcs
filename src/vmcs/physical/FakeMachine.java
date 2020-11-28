@@ -19,16 +19,16 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
 
     private static FakeMachine fakeMachine = null;
 
-    public static FakeMachine getMachineInstance() {
-        if (fakeMachine == null) {
-            synchronized (FakeMachine.class) {
-                if (fakeMachine == null) {
-                    fakeMachine = new FakeMachine();
-                }
-            }
-        }
-        return fakeMachine;
-    }
+//    public static FakeMachine getMachineInstance() {
+//        if (fakeMachine == null) {
+//            synchronized (FakeMachine.class) {
+//                if (fakeMachine == null) {
+//                    fakeMachine = new FakeMachine();
+//                }
+//            }
+//        }
+//        return fakeMachine;
+//    }
 
     @Override
     public void addNewCoinInterfaceStatListener(CoinInterFace.CoinInterfaceListener coinInterfaceListener) {
@@ -53,7 +53,7 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
         }
     }
 
-    private FakeMachine() {
+    public FakeMachine() {
         coinInterfaceListeners = new ArrayList<>();
         doorState = DoorState.getInstance(this);
     }
