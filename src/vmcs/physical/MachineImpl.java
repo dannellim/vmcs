@@ -7,7 +7,7 @@ import vmcs.model.Drink;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinInterFace.CoinInterfaceListener, Machine, DoorState.DoorStateChangeListener {
+public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinInterFace.CoinInterfaceListener, Machine, DoorState.DoorStateChangeListener {
 
     private CoinInterFace coinInterface;
     private DrinkInterface drinkInterface;
@@ -17,7 +17,7 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
     private List<DrinkInterface.DrinkInterfaceListener> drinksInterfaceListeners;
     private List<DoorState.DoorStateChangeListener> doorStateChangeListeners;
 
-    private static FakeMachine fakeMachine = null;
+    private static MachineImpl fakeMachine = null;
 
 //    public static FakeMachine getMachineInstance() {
 //        if (fakeMachine == null) {
@@ -53,7 +53,7 @@ public class FakeMachine implements DrinkInterface.DrinkInterfaceListener, CoinI
         }
     }
 
-    public FakeMachine() {
+    public MachineImpl() {
         coinInterfaceListeners = new ArrayList<>();
         doorState = DoorState.getInstance(this);
     }
