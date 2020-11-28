@@ -5,13 +5,10 @@
  */
 package vendingmachinecontrolsystem.ui;
 
-import vendingmachinecontrolsystem.controller.CustomerControllerImpl;
-import vendingmachinecontrolsystem.controller.MachineryController;
-import vendingmachinecontrolsystem.controller.MaintainerController;
-import vendingmachinecontrolsystem.factory.PropertiesFactory;
-import vendingmachinecontrolsystem.model.Coin;
-import vendingmachinecontrolsystem.model.Drink;
-import vendingmachinecontrolsystem.util.CurrencyHelper;
+import vmcs.factory.PropertiesFactory;
+import vmcs.model.Coin;
+import vmcs.model.Drink;
+import vmcs.util.CurrencyHelper;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +29,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author Dannel
  */
-public class MaintenancePanel extends javax.swing.JFrame {
+public class MaintenancePanel {
 
     /**
      * Creates new form MaintenancePanel
@@ -62,7 +59,7 @@ public class MaintenancePanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
-
+        jFrame = new javax.swing.JFrame();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -92,7 +89,7 @@ public class MaintenancePanel extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
 
-        setTitle("VMCS - Maintainer Panel");
+        jFrame.setTitle("VMCS - Maintainer Panel");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -161,7 +158,8 @@ public class MaintenancePanel extends javax.swing.JFrame {
         jTextField1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                selectedDrink.setValue(Double.valueOf(jTextField1.getText()));
+                changeDrinkPrice();
+                //selectedDrink.setValue(Double.valueOf(jTextField1.getText()));
             }
         });
         jPanel6.setLayout(new java.awt.GridBagLayout());
@@ -224,8 +222,8 @@ public class MaintenancePanel extends javax.swing.JFrame {
         });
         jPanel9.add(jButton3, new java.awt.GridBagConstraints());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(jFrame.getContentPane());
+        jFrame.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -277,20 +275,20 @@ public class MaintenancePanel extends javax.swing.JFrame {
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        pack();
-		setLocationRelativeTo(null);
+        jFrame.pack();
+		jFrame.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        MaintainerController.get().showTotalCashHeld();
+        //MaintainerController.get().showTotalCashHeld();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         jTextField3.setText(jTextField2.getText());
         jTextField2.setText("0 c");
-        MaintainerController.get().collectAllCash();
+        //MaintainerController.get().collectAllCash();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -299,6 +297,10 @@ public class MaintenancePanel extends javax.swing.JFrame {
         isLocked = true;
         lock();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void changeDrinkPrice(){
+        
+    }
 
     public void lock() {
         resetPassword();
@@ -311,13 +313,13 @@ public class MaintenancePanel extends javax.swing.JFrame {
         jPanel7.setVisible(false);
         jPanel8.setVisible(false);
         jPanel9.setVisible(false);
-        CustomerControllerImpl.get().enableTransactions();
+        //CustomerControllerImpl.get().enableTransactions();
     }
 
     public void unlock() {
         resetPassword();
-        CustomerControllerImpl.get().terminateTransaction();
-        MachineryController.get().unLockDoor();
+        //CustomerControllerImpl.get().terminateTransaction();
+       // MachineryController.get().unLockDoor();
         jLabel4.setVisible(true);
         coinPanel.setVisible(true);
         jLabel7.setVisible(true);
@@ -327,7 +329,7 @@ public class MaintenancePanel extends javax.swing.JFrame {
         jPanel7.setVisible(true);
         jPanel8.setVisible(true);
         jPanel9.setVisible(true);
-        CustomerControllerImpl.get().disableTransactions();
+        //CustomerControllerImpl.get().disableTransactions();
     }
 
     public void resetPassword() {
@@ -343,7 +345,7 @@ public class MaintenancePanel extends javax.swing.JFrame {
         });
     }
 
-    public void showTotalCashHeld(double total) {
+    public void showTotalCashHeld(int total) {
         jTextField2.setText(CurrencyHelper.toCoins(total));
         jTextField3.setText("0 c");
     }
@@ -378,17 +380,17 @@ public class MaintenancePanel extends javax.swing.JFrame {
         jPasswordField1.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
-            	MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
+            	//MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-            	MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
+            	//MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-            	MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
+            	//MaintainerController.get().checkPassword(new String(jPasswordField1.getPassword()));
             }
         });
     }
@@ -509,5 +511,6 @@ public class MaintenancePanel extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JFrame jFrame;
     // End of variables declaration//GEN-END:variables
 }
