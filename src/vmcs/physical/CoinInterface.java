@@ -1,6 +1,5 @@
 package vmcs.physical;
 
-
 import vmcs.model.Coin;
 
 import java.util.List;
@@ -12,75 +11,76 @@ public class CoinInterface implements Observer {
     CoinInterfaceListener coinInterfaceListener;
     List<Coin> coins;
 
-
     public CoinInterface(CoinInterfaceListener coinInterfaceListener, List<Coin> coins) {
         this.coinInterfaceListener = coinInterfaceListener;
-        this.coins=coins;
+        this.coins = coins;
         coins.forEach(coin -> {
             coin.addObserver(this);
         });
     }
-    public List<Coin> getCoinStock(){
-        return  coins;
+
+    public List<Coin> getCoinStock() {
+        return coins;
     }
 
-    public void updateCoinStock(Coin coin,int qty){
-        Coin coinInStorage=
-                coins.get(coins.indexOf(coin));
+    public void updateCoinStock(Coin coin, int qty) {
+        Coin coinInStorage
+                = coins.get(coins.indexOf(coin));
         coinInStorage.setQuantity(qty);
     }
-    public void insertCoin(Coin coin){
-        if(coin.getValue()!=0){
-            coinInterfaceListener.onCoinAccepted(coin);
-            Coin coinInStorage=
-                    coins.get(coins.indexOf(coin));
+
+    public void insertCoin(Coin coin) {
+        if (coin.getValue() != 0) {
+            Coin coinInStorage
+                    = coins.get(coins.indexOf(coin));
             coinInStorage.increaseStock();
-        }else{
-//            dispense(coin);
+            coinInterfaceListener.onCoinAccepted(coin);
+        } else {
+            //dispense(coin);
             coinInterfaceListener.onCoinRejected(coin);
         }
     }
 
-
-    public void dispense(Coin coin){
+    public void dispense(Coin coin) {
         //if hardware ,we tell hardware to dispense coin
-        Coin coinInStorage=
-                coins.get(coins.indexOf(coin));
+        Coin coinInStorage
+                = coins.get(coins.indexOf(coin));
         coinInStorage.decreaseStock();
         coinInterfaceListener.onCoinDispensed(coin);
 
     }
-    public void dispense(List<Coin> coin){
+
+    public void dispense(List<Coin> coins) {
         //if hardware ,we tell hardware to dispense coin
-        coinInterfaceListener.onCoinDispensed(coin);
-        for (Coin c:
-             coin) {
-            Coin coinInStorage=
-                    coins.get(coins.indexOf(c));
+        for (Coin coin : coins) {
+            Coin coinInStorage
+                    = coins.get(coins.indexOf(coin));
             coinInStorage.decreaseStock();
         }
+        coinInterfaceListener.onCoinDispensed(coins);
 
     }
 
     @Override
     public void update(Observable observable, Object o) {
-
-        if(o instanceof  Coin){
-            coinInterfaceListener.onCoinStockChanged((Coin) o);
+        if (observable instanceof Coin) {
+            coinInterfaceListener.onCoinStockChanged((Coin) observable);
 
         }
     }
 
     public interface CoinInterfaceListener {
+
         void onCoinAccepted(Coin coin);
+
         void onCoinRejected(Coin coin);
+
         void onCoinDispensed(Coin coin);
+
         void onCoinDispensed(List<Coin> coin);
+
         void onCoinStockChanged(Coin coin);
 
     }
-
-
-
 
 }

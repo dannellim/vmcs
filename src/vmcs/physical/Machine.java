@@ -22,17 +22,18 @@ public interface Machine {
     public void addDoorStateInterfaceStatListener(DoorState.DoorStateChangeListener doorStateChangeListener);
 
     public void initStocks(List<Coin> coins, List<Drink> drinks);
-    
+
     public List<Drink> getAllDrinks();
 
     public List<Coin> getAllCoins();
-    
+
     public void dispense(Coin coin);
 
     public boolean isDoorLock();
-    public void  unlockDoor();
-    public  void  lockDoor();
 
+    public void unlockDoor();
+
+    public void lockDoor();
 
     public void dispense(List<Coin> coins);
 }
