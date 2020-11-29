@@ -9,7 +9,7 @@ import vmcs.model.MaintainerState;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
-import vmcs.physical.MachineFactory;
+import vmcs.physical.MachineImpl;
 
 public class MaintainerControllerImpl implements Observer, MaintainerController {
 
@@ -60,7 +60,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
             maintenancePanel.resetPassword();
         } else if (validatePassword(password)) {
             maintenancePanel.validPassword();
-            MachineFactory.getMachine().unlockDoor();
+            MachineImpl.getMachine().unlockDoor();
             MaintainerState.getInstance().setLogIn(true);
         } else {
             maintenancePanel.invalidPassword();
@@ -73,7 +73,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     }
 
     private void setDrinkStocks() {
-        Iterator<Drink> iterator = MachineFactory.getMachine().getAllDrinks().iterator();
+        Iterator<Drink> iterator = MachineImpl.getMachine().getAllDrinks().iterator();
         while (iterator.hasNext()) {
             Drink drink = (Drink) iterator.next();
             maintenancePanel.addNewDrink(drink);
@@ -82,7 +82,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     }
     
     private void setCoinStocks() {
-        Iterator<Coin> iterator = MachineFactory.getMachine().getAllCoins().iterator();
+        Iterator<Coin> iterator = MachineImpl.getMachine().getAllCoins().iterator();
         while (iterator.hasNext()) {
             Coin coin = (Coin) iterator.next();
             maintenancePanel.addNewCoins(coin);
@@ -92,7 +92,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
 
     @Override
     public void collectAllCash() {
-        MachineFactory.getMachine().getAllCoins().forEach(coin -> {
+        MachineImpl.getMachine().getAllCoins().forEach(coin -> {
             coin.setQuantity(0);
         });
     }
@@ -105,7 +105,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     }
 
     private int getTotalCash(int total) {
-        Iterator<Coin> iterator = MachineFactory.getMachine().getAllCoins().iterator();
+        Iterator<Coin> iterator = MachineImpl.getMachine().getAllCoins().iterator();
         while (iterator.hasNext()) {
             Coin coin = (Coin) iterator.next();
             if (!coin.getName().equalsIgnoreCase("Invalid")) {
@@ -123,7 +123,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
         if (selectedDrink != null) {
             int price = Integer.parseInt(newValue);
             selectedDrink.setValue(price);
-            MachineFactory.getMachine().updateDrinkPrice(selectedDrink, price);
+            MachineImpl.getMachine().updateDrinkPrice(selectedDrink, price);
         }
     }
 
@@ -133,14 +133,14 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
         System.out.println("---------------------- MaintainerController UPDATE Start ----------------------");
         if (arg0 instanceof Coin) {
             System.out.println("Coin Update");
-            Iterator<Coin> iterator = MachineFactory.getMachine().getAllCoins().iterator();
+            Iterator<Coin> iterator = MachineImpl.getMachine().getAllCoins().iterator();
             while (iterator.hasNext()) {
                 Coin coin = (Coin) iterator.next();
                 System.out.println(coin.toString());
             }
         } else if (arg0 instanceof Drink) {
             System.out.println("Drink Update");
-            Iterator<Drink> iterator = MachineFactory.getMachine().getAllDrinks().iterator();
+            Iterator<Drink> iterator = MachineImpl.getMachine().getAllDrinks().iterator();
             while (iterator.hasNext()) {
                 Drink drink = (Drink) iterator.next();
                 System.out.println(drink.toString());
@@ -151,6 +151,6 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
 
     @Override
     public boolean isLock() {
-        return MachineFactory.getMachine().isDoorLock();
+        return MachineImpl.getMachine().isDoorLock();
     }
 }

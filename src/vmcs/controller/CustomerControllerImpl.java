@@ -16,7 +16,7 @@ import vmcs.model.Coin;
 import vmcs.model.Drink;
 import vmcs.physical.CoinInterface.CoinInterfaceListener;
 import vmcs.physical.DrinkInterface.DrinkInterfaceListener;
-import vmcs.physical.MachineFactory;
+import vmcs.physical.MachineImpl;
 import vmcs.ui.CustomerPanel;
 import vmcs.util.CurrencyHelper;
 
@@ -33,24 +33,24 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
     private final CustomerPanel customerPanel;
 
     public CustomerControllerImpl(CustomerPanel customerPanel) {
-        MachineFactory.getMachine().addNewCoinInterfaceStatListener(this);
-        MachineFactory.getMachine().addNewDrinkInterfaceStatListener(this);
+        MachineImpl.getMachine().addNewCoinInterfaceStatListener(this);
+        MachineImpl.getMachine().addNewDrinkInterfaceStatListener(this);
         this.customerPanel = customerPanel;
     }
 
     @Override
     public List<Coin> getCoinStocks() {
-        return MachineFactory.getMachine().getAllCoins();
+        return MachineImpl.getMachine().getAllCoins();
     }
 
     @Override
     public void insertCoin(Coin coin) {
-        MachineFactory.getMachine().acceptCoin(coin);
+        MachineImpl.getMachine().acceptCoin(coin);
     }
 
     @Override
     public List<Drink> getDrinkStocks() {
-        return MachineFactory.getMachine().getAllDrinks();
+        return MachineImpl.getMachine().getAllDrinks();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
     @Override
     public void terminateTransaction() {
         restoreCoinStockAftTermination();
-        customerPanel.refreshDrinkPanel(MachineFactory.getMachine().getAllDrinks());
+        customerPanel.refreshDrinkPanel(MachineImpl.getMachine().getAllDrinks());
     }
 
     private void restoreCoinStockAftTermination() {
@@ -74,7 +74,7 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
             Coin coin = (Coin) transactionCoinOriginator.getStock();
             coins.add(coin);
         }
-        MachineFactory.getMachine().dispense(coins);
+        MachineImpl.getMachine().dispense(coins);
     }
 
     @Override
@@ -110,14 +110,14 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
     private void checkAmountSufficiency() {
         int amount = CurrencyHelper.coinsToAmount(customerPanel.getInsertedAmount());
         if (amount >= selectedDrink.getValue()) {
-            MachineFactory.getMachine().dispenseDrink(selectedDrink);
+            MachineImpl.getMachine().dispenseDrink(selectedDrink);
             calculateChange(amount, selectedDrink.getValue());
         }
     }
 
     private void calculateChange(int amount, int drinkValue) {
         int change = amount - drinkValue;
-        int highestChangeAvailable = calculateHighestChange(change, MachineFactory.getMachine().getAllCoins());
+        int highestChangeAvailable = calculateHighestChange(change, MachineImpl.getMachine().getAllCoins());
         customerPanel.displayChange(change, highestChangeAvailable);
     }
 
@@ -142,7 +142,7 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
             Coin coin = coins.get(i);
             if (coin.getQuantity() > 0) {
                 if (coin.getValue() <= remainder) {
-                    if (!checkIfHigerCoinAvailable(remainder, coin.getValue(), MachineFactory.getMachine().getAllCoins())) {
+                    if (!checkIfHigerCoinAvailable(remainder, coin.getValue(), MachineImpl.getMachine().getAllCoins())) {
                         remainder = remainder - coin.getValue();
                         result = result + coin.getValue();
                         coin.setQuantity(coin.getQuantity() - 1); // must subtract to return to customer
@@ -183,6 +183,6 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
 
     @Override
     public void onDrinkStockChanged(Drink drink) {
-        customerPanel.refreshDrinkPanel(MachineFactory.getMachine().getAllDrinks());
+        customerPanel.refreshDrinkPanel(MachineImpl.getMachine().getAllDrinks());
     }
 }

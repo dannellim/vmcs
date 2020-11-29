@@ -13,7 +13,7 @@ import vmcs.factory.PropertiesAPI;
 import vmcs.factory.PropertiesFactory;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
-import vmcs.physical.MachineFactory;
+import vmcs.physical.MachineImpl;
 import vmcs.util.CurrencyHelper;
 
 /**
@@ -209,7 +209,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     @Override
     public void beginSim() {
         enableSimulator();
-        MachineFactory.getMachine().initStocks(initCoins(), initDrinks());
+        MachineImpl.getMachine().initStocks(initCoins(), initDrinks());
     }
 
     @Override
@@ -280,14 +280,14 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     private void saveProperties() {
         if (propertiesFactory != null) {
             Properties coinProp = new Properties();
-            List<Coin> coins = MachineFactory.getMachine().getAllCoins();
+            List<Coin> coins = MachineImpl.getMachine().getAllCoins();
             for(Coin coin: coins){
                 coinProp.put(coin.getName(), coin.getValue() + ";" + coin.getQuantity());
             }
             propertiesFactory.saveProperties(PropertiesFactory.COIN, coinProp);
             System.out.println(coinProp);
             Properties drinkProp = new Properties();
-            List<Drink> drinks = MachineFactory.getMachine().getAllDrinks();
+            List<Drink> drinks = MachineImpl.getMachine().getAllDrinks();
             for (Drink drink : drinks) {
                 drinkProp.put(drink.getName(), CurrencyHelper.toCoins(drink.getValue()) + ";" + drink.getQuantity());
             }

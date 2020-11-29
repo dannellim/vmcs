@@ -17,18 +17,19 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     private final List<DrinkInterface.DrinkInterfaceListener> drinksInterfaceListeners;
     private List<DoorState.DoorStateChangeListener> doorStateChangeListeners;
 
-    private static final MachineImpl fakeMachine = null;
+    private static volatile Machine sSoleInstance;
 
-//    public static FakeMachine getMachineInstance() {
-//        if (fakeMachine == null) {
-//            synchronized (FakeMachine.class) {
-//                if (fakeMachine == null) {
-//                    fakeMachine = new FakeMachine();
-//                }
-//            }
-//        }
-//        return fakeMachine;
-//    }
+    public static Machine getMachine() {
+        if (sSoleInstance == null) {
+            synchronized (Machine.class) {
+                if (sSoleInstance == null) {
+                    sSoleInstance = new MachineImpl();
+                }
+            }
+        }
+        return sSoleInstance;
+    }
+
     @Override
     public void addNewCoinInterfaceStatListener(CoinInterface.CoinInterfaceListener coinInterfaceListener) {
         if (coinInterfaceListener != null) {

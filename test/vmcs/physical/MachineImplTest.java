@@ -2,9 +2,12 @@ package vmcs.physical;
 
 
 public class MachineImplTest {
+    
+    
 
     @org.junit.Test
     public void initStocks() {
+        
     }
 
     @org.junit.Test

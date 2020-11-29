@@ -10,7 +10,7 @@ import vmcs.model.Drink;
 import vmcs.model.Stock;
 import vmcs.physical.CoinInterface.CoinInterfaceListener;
 import vmcs.physical.DrinkInterface.DrinkInterfaceListener;
-import vmcs.physical.MachineFactory;
+import vmcs.physical.MachineImpl;
 import vmcs.ui.MachineryPanel;
 import vmcs.ui.MachineryPanelImpl;
 
@@ -19,9 +19,9 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
     private final MachineryPanel machineryPanel;
 
     public MachineryControllerImpl(MachineryPanel machineryPanel) {
-        MachineFactory.getMachine().addDoorStateInterfaceStatListener(this);
-        MachineFactory.getMachine().addNewCoinInterfaceStatListener(this);
-        MachineFactory.getMachine().addNewDrinkInterfaceStatListener(this);
+        MachineImpl.getMachine().addDoorStateInterfaceStatListener(this);
+        MachineImpl.getMachine().addNewCoinInterfaceStatListener(this);
+        MachineImpl.getMachine().addNewDrinkInterfaceStatListener(this);
         this.machineryPanel = machineryPanel;
     }
 
@@ -30,15 +30,15 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
         addDrinksToUI();
         addCoinsToUI();
         updateDoorStateToUI();
-        updateUIAccordingToDoorState(MachineFactory.getMachine().isDoorLock());
+        updateUIAccordingToDoorState(MachineImpl.getMachine().isDoorLock());
     }
 
     private void updateDoorStateToUI() {
-        machineryPanel.updateDoorLockState(MachineFactory.getMachine().isDoorLock());
+        machineryPanel.updateDoorLockState(MachineImpl.getMachine().isDoorLock());
     }
 
     private void addCoinsToUI() {
-        Iterator<Coin> iterator = MachineFactory.getMachine().getAllCoins().iterator();
+        Iterator<Coin> iterator = MachineImpl.getMachine().getAllCoins().iterator();
         while (iterator.hasNext()) {
             Coin coin = (Coin) iterator.next();
             machineryPanel.addNewCoins(coin);
@@ -47,7 +47,7 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
     }
 
     private void addDrinksToUI() {
-        Iterator<Drink> iterator = MachineFactory.getMachine().getAllDrinks().iterator();
+        Iterator<Drink> iterator = MachineImpl.getMachine().getAllDrinks().iterator();
         while (iterator.hasNext()) {
             Drink drink = iterator.next();
             machineryPanel.addNewDrink(drink);
@@ -57,18 +57,18 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
 
     @Override
     public void changeDrinkStock(Drink drink, int qty) {
-        if (!MachineFactory.getMachine().isDoorLock()) {
+        if (!MachineImpl.getMachine().isDoorLock()) {
             if (qty >= 0 && qty <= 20) {
-                MachineFactory.getMachine().updateDrinkStock(drink, qty);
+                MachineImpl.getMachine().updateDrinkStock(drink, qty);
             }
         }
     }
 
     @Override
     public void changeCoinStock(Coin coin, int qty) {
-        if (!MachineFactory.getMachine().isDoorLock()) {
+        if (!MachineImpl.getMachine().isDoorLock()) {
             if (qty >= 0 && qty <= 40) {
-                MachineFactory.getMachine().updateCoinStock(coin, qty);
+                MachineImpl.getMachine().updateCoinStock(coin, qty);
             }
         }
     }
@@ -80,13 +80,13 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
 
     @Override
     public void lockDoor() {
-        MachineFactory.getMachine().lockDoor();
+        MachineImpl.getMachine().lockDoor();
     }
 
     @Override
     public void unLockDoor() {
 
-        MachineFactory.getMachine().unlockDoor();
+        MachineImpl.getMachine().unlockDoor();
 
     }
 
