@@ -68,13 +68,15 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
     }
 
     private void restoreCoinStockAftTermination() {
-        List<Coin> coins = new ArrayList();
-        for (int i = 0; i < transactionCoinCaretaker.size(); i++) {
-            transactionCoinOriginator.getStateFromMemento(transactionCoinCaretaker.get(i));
-            Coin coin = (Coin) transactionCoinOriginator.getStock();
-            coins.add(coin);
+        if (transactionCoinCaretaker != null) {
+            List<Coin> coins = new ArrayList();
+            for (int i = 0; i < transactionCoinCaretaker.size(); i++) {
+                transactionCoinOriginator.getStateFromMemento(transactionCoinCaretaker.get(i));
+                Coin coin = (Coin) transactionCoinOriginator.getStock();
+                coins.add(coin);
+            }
+            MachineImpl.getMachine().dispense(coins);
         }
-        MachineImpl.getMachine().dispense(coins);
     }
 
     @Override
