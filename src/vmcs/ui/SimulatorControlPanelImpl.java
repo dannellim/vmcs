@@ -218,6 +218,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     public void endSim() {
         CustomerPanelImpl.getInstance().hide();
         MachineryPanelImpl.getInstance().hide();
+        MaintenancePanelImpl.getInstance().hide();
         disableSimulator();
         saveProperties();
     }
