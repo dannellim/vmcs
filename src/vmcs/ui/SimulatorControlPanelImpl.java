@@ -194,7 +194,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startMain() {
-        MaintenancePanelImpl.getInstance().init();
+        MaintenancePanelImpl.getInstance().lock();
         MaintenancePanelImpl.getInstance().show();
     }
 

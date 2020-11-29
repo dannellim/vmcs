@@ -25,7 +25,6 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
         this.maintenancePanel = maintenancePanel;
         setDrinkStocks();
         setCoinStocks();
-        this.maintenancePanel.lock();
     }
 
     @Override
