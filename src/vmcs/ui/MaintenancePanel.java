@@ -36,4 +36,6 @@ public interface MaintenancePanel {
     
     void refresh();
     
+    void init();
+    
 }

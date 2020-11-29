@@ -13,10 +13,9 @@ import vmcs.physical.MachineImpl;
 
 public class MaintainerControllerImpl implements Observer, MaintainerController {
 
-    private MaintenancePanel maintenancePanel;
-    private PropertiesFactory propertiesFactory;
+    private final MaintenancePanel maintenancePanel;
+    private final PropertiesFactory propertiesFactory;
     private String PASSWORD = "123";
-    private MaintainerState maintainerState;
     private Drink selectedDrink;
 
     public MaintainerControllerImpl(MaintenancePanel maintenancePanel) {
@@ -46,12 +45,12 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
 
     @Override
     public void logIn() {
-        maintainerState.setLogIn(true);
+        MaintainerState.getInstance().setLogIn(true);
     }
 
     @Override
     public void unLogIn() {
-        maintainerState.setLogIn(false);
+        MaintainerState.getInstance().setLogIn(false);
     }
 
     @Override

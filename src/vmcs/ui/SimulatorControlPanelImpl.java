@@ -26,8 +26,6 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
      * Creates new form SimulatorControlPanel
      */
     private PropertiesFactory propertiesFactory;
-    private CustomerPanel customerPanel;
-    private MaintenancePanel maintenancePanel;
 
     public SimulatorControlPanelImpl() {
         initComponents();
@@ -196,6 +194,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startMain() {
+        MaintenancePanelImpl.getInstance().init();
         MaintenancePanelImpl.getInstance().show();
     }
 

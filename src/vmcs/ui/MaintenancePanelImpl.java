@@ -58,6 +58,10 @@ public class MaintenancePanelImpl implements MaintenancePanel {
                 .getProperty("password");
         initComponents();
         initTextFieldListner();
+    }
+    
+    @Override
+    public void init(){
         this.maintainerController = new MaintainerControllerImpl(this);
     }
 
@@ -330,6 +334,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         jPanel8.setVisible(false);
         jPanel9.setVisible(false);
         CustomerPanelImpl.getInstance().enableTransactions();
+        maintainerController.unLogIn();
     }
 
     @Override
