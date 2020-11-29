@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -307,7 +308,9 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         // TODO add your handling code here:
         if (maintainerController.isLock()) {
             lock();
-        }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please lock the door first!");
+        } 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void changeDrinkPrice() {
