@@ -56,7 +56,7 @@ public class MachineryPanelImpl implements MachineryPanel {
     }
 
     @Override
-    public void addNewCoins(Coin coin) {
+    public void addCoinToUI(Coin coin) {
         if (!coin.getName().equalsIgnoreCase("Invalid")) {
             JLabel coinLabel = new JLabel();
             coinLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -71,7 +71,7 @@ public class MachineryPanelImpl implements MachineryPanel {
 
                 int qty = Integer.valueOf(coinQty.getText());
                 if (qty >= 0 && qty <= 40) {
-                    coin.setQuantity(Integer.valueOf(coinQty.getText()));
+                    machineryController.changeCoinStock(coin,qty);
 
                 } else {
                     JOptionPane.showMessageDialog(jFrame,
@@ -85,7 +85,7 @@ public class MachineryPanelImpl implements MachineryPanel {
     }
 
     @Override
-    public void addNewDrink(final Drink drink) {
+    public void addDrinkToUI(final Drink drink) {
         JLabel drinkLabel = new JLabel();
         drinkLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         drinkLabel.setFont(new java.awt.Font("Tahoma", 0, 14));
@@ -96,7 +96,7 @@ public class MachineryPanelImpl implements MachineryPanel {
         drinkQty.addActionListener(actionEvent -> {
             int qty = Integer.valueOf(drinkQty.getText());
             if (qty >= 0 && qty <= 20) {
-                drink.setQuantity(Integer.valueOf(drinkQty.getText()));
+                machineryController.changeDrinkStock(drink,qty);
 
             } else {
                 JOptionPane.showMessageDialog(jFrame,

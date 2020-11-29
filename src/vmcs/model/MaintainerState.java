@@ -9,7 +9,7 @@ public class MaintainerState extends Observable {
     private static MaintainerState maintainerState;
 
     private MaintainerState() {
-        isLogIn = true;
+        isLogIn = false;
     }
 
     public static MaintainerState getInstance() {

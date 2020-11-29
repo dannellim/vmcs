@@ -14,9 +14,9 @@ import vmcs.model.Drink;
  */
 public interface MachineryPanel {
 
-    void addNewCoins(Coin coin);
+    void addCoinToUI(Coin coin);
 
-    void addNewDrink(final Drink drink);
+    void addDrinkToUI(final Drink drink);
 
     void changeTextFieldState(boolean state);
 

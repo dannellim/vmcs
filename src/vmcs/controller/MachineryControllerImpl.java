@@ -5,6 +5,7 @@ import java.util.List;
 import vmcs.model.Coin;
 import vmcs.model.DoorState.DoorStateChangeListener;
 import vmcs.model.Drink;
+import vmcs.model.MaintainerState;
 import vmcs.physical.CoinInterface.CoinInterfaceListener;
 import vmcs.physical.DrinkInterface.DrinkInterfaceListener;
 import vmcs.physical.MachineImpl;
@@ -37,7 +38,7 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
         Iterator<Coin> iterator = MachineImpl.getMachine().getAllCoins().iterator();
         while (iterator.hasNext()) {
             Coin coin = (Coin) iterator.next();
-            machineryPanel.addNewCoins(coin);
+            machineryPanel.addCoinToUI(coin);
         }
         machineryPanel.refresh();
     }
@@ -46,7 +47,7 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
         Iterator<Drink> iterator = MachineImpl.getMachine().getAllDrinks().iterator();
         while (iterator.hasNext()) {
             Drink drink = iterator.next();
-            machineryPanel.addNewDrink(drink);
+            machineryPanel.addDrinkToUI(drink);
         }
         machineryPanel.refresh();
     }
@@ -76,13 +77,19 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
 
     @Override
     public void lockDoor() {
-        MachineImpl.getMachine().lockDoor();
+            MachineImpl.getMachine().lockDoor();
+
     }
 
     @Override
     public void unLockDoor() {
 
-        MachineImpl.getMachine().unlockDoor();
+        if(MaintainerState.getInstance().isLogIn()){
+            MachineImpl.getMachine().unlockDoor();
+        }else{
+            MachineImpl.getMachine().lockDoor();
+
+        }
 
     }
 

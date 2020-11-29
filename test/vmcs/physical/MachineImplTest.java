@@ -147,7 +147,7 @@ public class MachineImplTest {
             assertEquals(coin1, coin2);
         }
     }
-
+    
     @org.junit.Test
     public void dispense() {
         Coin coin = new Coin();
