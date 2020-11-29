@@ -53,10 +53,10 @@ public class CustomerPanelImpl implements CustomerPanel {
     
     private CustomerPanelImpl() {
         initComponents();
+        init();
     }
 
-    @Override
-    public void init() {
+    private void init() {
         this.customerController = new CustomerControllerImpl(this);
         for (Coin coin : this.customerController.getCoinStocks()) {
             addNewCoins(coin);
@@ -194,6 +194,7 @@ public class CustomerPanelImpl implements CustomerPanel {
     @Override
     public void enableTransactions() {
         disableCoinButtons();
+        refreshDrinkPanel(customerController.getDrinkStocks());
     }
 
     @Override

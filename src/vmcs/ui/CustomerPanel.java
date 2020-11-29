@@ -15,8 +15,6 @@ import vmcs.model.Drink;
  * @author Dannel
  */
 public interface CustomerPanel {
-    
-    public void init();
 
     public void updateInsertedAmount(int amount);
 

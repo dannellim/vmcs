@@ -201,8 +201,6 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startCust() {
-        CustomerPanelImpl.getInstance().init();
-        CustomerPanelImpl.getInstance().refresh();
         CustomerPanelImpl.getInstance().show();
     }
 
@@ -219,9 +217,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void endSim() {
-        if (customerPanel != null) {
-            customerPanel.hide();
-        }
+        CustomerPanelImpl.getInstance().hide();
         MachineryPanelImpl.getInstance().hide();
         disableSimulator();
         saveProperties();

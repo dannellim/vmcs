@@ -326,7 +326,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         jPanel7.setVisible(false);
         jPanel8.setVisible(false);
         jPanel9.setVisible(false);
-        CustomerPanelImpl.getInstance().enableTerminateButton();
+        CustomerPanelImpl.getInstance().enableTransactions();
     }
 
     @Override
