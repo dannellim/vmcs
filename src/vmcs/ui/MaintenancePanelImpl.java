@@ -12,14 +12,7 @@ import vmcs.util.CurrencyHelper;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -43,8 +36,21 @@ public class MaintenancePanelImpl implements MaintenancePanel {
     private String PASSWORD = "123";
     private Drink selectedDrink;
     private MaintainerController maintainerController;
+    
+    private static volatile MaintenancePanel sSoleInstance;
 
-    public MaintenancePanelImpl() {
+    public static MaintenancePanel getInstance() {
+        if (sSoleInstance == null) {
+            synchronized (MaintenancePanel.class) {
+                if (sSoleInstance == null) {
+                    sSoleInstance = new MaintenancePanelImpl();
+                }
+            }
+        }
+        return sSoleInstance;
+    }
+
+    private MaintenancePanelImpl() {
         propertiesFactory = new PropertiesFactory();
         PASSWORD = propertiesFactory.getProperty(PropertiesFactory.MACHINE)
                 .getProperty("password");

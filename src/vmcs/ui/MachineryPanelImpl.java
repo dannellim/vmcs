@@ -33,7 +33,21 @@ public class MachineryPanelImpl implements MachineryPanel {
     /**
      * Creates new form MachineryPanel
      */
-    public MachineryPanelImpl() {
+    
+    private static volatile MachineryPanel sSoleInstance;
+
+    public static MachineryPanel getInstance() {
+        if (sSoleInstance == null) {
+            synchronized (MachineryPanel.class) {
+                if (sSoleInstance == null) {
+                    sSoleInstance = new MachineryPanelImpl();
+                }
+            }
+        }
+        return sSoleInstance;
+    }
+
+    private MachineryPanelImpl() {
         initComponents();
         drinkQtyTextField = new HashMap<>();
         coinQtyTextField = new HashMap<>();
@@ -269,12 +283,12 @@ public class MachineryPanelImpl implements MachineryPanel {
     public void show() {
         jFrame.setVisible(true);
     }
-    
+
     @Override
     public void hide() {
         jFrame.setVisible(false);
     }
-    
+
     @Override
     public void refresh() {
         jFrame.pack();

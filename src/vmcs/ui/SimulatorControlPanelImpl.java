@@ -7,7 +7,6 @@ package vmcs.ui;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import vmcs.factory.PropertiesAPI;
@@ -28,7 +27,6 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
      */
     private PropertiesFactory propertiesFactory;
     private CustomerPanel customerPanel;
-    private MachineryPanel machineryPanel;
     private MaintenancePanel maintenancePanel;
 
     public SimulatorControlPanelImpl() {
@@ -192,29 +190,20 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
 
     @Override
     public void startMach() {
-        if (machineryPanel == null) {
-            machineryPanel = new MachineryPanelImpl();
-            machineryPanel.refresh();
-        }
-        machineryPanel.show();
+        MachineryPanelImpl.getInstance().refresh();
+        MachineryPanelImpl.getInstance().show();
     }
 
     @Override
     public void startMain() {
-        if(maintenancePanel == null){
-            maintenancePanel = new MaintenancePanelImpl();
-        }
-        maintenancePanel.show();
+        MaintenancePanelImpl.getInstance().show();
     }
 
     @Override
     public void startCust() {
-        if (customerPanel == null) {
-            customerPanel = new CustomerPanelImpl();
-            customerPanel.init();
-            customerPanel.refresh();
-        }
-        customerPanel.show();
+        CustomerPanelImpl.getInstance().init();
+        CustomerPanelImpl.getInstance().refresh();
+        CustomerPanelImpl.getInstance().show();
     }
 
     @Override
@@ -233,9 +222,7 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
         if (customerPanel != null) {
             customerPanel.hide();
         }
-        if (machineryPanel != null) {
-            machineryPanel.hide();
-        }
+        MachineryPanelImpl.getInstance().hide();
         disableSimulator();
         saveProperties();
     }

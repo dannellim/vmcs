@@ -2,11 +2,16 @@ package vmcs.physical;
 
 public class MachineFactory {
 
-    public static Machine machine=null;
-    public  static Machine getMachine(){
-        if(machine==null){
-            machine=new MachineImpl();
+    private static volatile Machine sSoleInstance;
+
+    public static Machine getMachine() {
+        if (sSoleInstance == null) {
+            synchronized (Machine.class) {
+                if (sSoleInstance == null) {
+                    sSoleInstance = new MachineImpl();
+                }
+            }
         }
-        return machine;
+        return sSoleInstance;
     }
 }

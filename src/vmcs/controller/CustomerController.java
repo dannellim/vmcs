@@ -15,21 +15,15 @@ import vmcs.ui.CustomerPanel;
  *
  * @author Dannel
  */
-public abstract class CustomerController {
+public interface CustomerController {
     
-    protected CustomerPanel customerPanel;
+    public List<Coin> getCoinStocks();
     
-    public CustomerController(CustomerPanel customerPanel){
-        this.customerPanel = customerPanel;
-    }
+    public void insertCoin(Coin coin);
     
-    public abstract List<Coin> getCoinStocks();
+    public List<Drink> getDrinkStocks();
     
-    public abstract void insertCoin(Coin coin);
+    public void selectDrink(Drink drink);
     
-    public abstract List<Drink> getDrinkStocks();
-    
-    public abstract void selectDrink(Drink drink);
-    
-    public abstract void terminateTransaction();
+    public void terminateTransaction();
 }

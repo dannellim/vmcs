@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import vmcs.controller.CustomerController;
 import vmcs.controller.CustomerControllerImpl;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
@@ -24,7 +25,7 @@ import vmcs.util.CurrencyHelper;
  *
  * @author Dannel
  */
-public class CustomerPanelImpl extends CustomerPanel {
+public class CustomerPanelImpl implements CustomerPanel {
 
     /**
      * Creates new form CustomerPanel
@@ -35,7 +36,22 @@ public class CustomerPanelImpl extends CustomerPanel {
     private static final String INVALID_COIN_TEXT = "Invalid Coin";
     private static final String INSUFFICIENT_CHANGE_TEXT = "Insufficient Change Available";
 
-    public CustomerPanelImpl() {
+    private static volatile CustomerPanel sSoleInstance;
+
+    public static CustomerPanel getInstance() {
+        if (sSoleInstance == null) {
+            synchronized (CustomerPanel.class) {
+                if (sSoleInstance == null) {
+                    sSoleInstance = new CustomerPanelImpl();
+                }
+            }
+        }
+        return sSoleInstance;
+    }
+    
+    private CustomerController customerController;
+    
+    private CustomerPanelImpl() {
         initComponents();
     }
 

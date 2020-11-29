@@ -14,44 +14,42 @@ import vmcs.model.Drink;
  *
  * @author Dannel
  */
-public abstract class CustomerPanel {
+public interface CustomerPanel {
     
-    protected CustomerController customerController;
+    public void init();
+
+    public void updateInsertedAmount(int amount);
+
+    public void displayInvalidCoin();
+
+    public void disableCoinButtons();
+
+    public void disableTransactions();
+
+    public void enableTransactions();
+
+    public void refreshDrinkPanel(List<Drink> drinkList);
+
+    public String getInsertedAmount();
+
+    public void dispenseDrink(Drink drink);
     
-    public abstract void init();
-
-    public abstract void updateInsertedAmount(int amount);
-
-    public abstract void displayInvalidCoin();
-
-    public abstract void disableCoinButtons();
-
-    public abstract void disableTransactions();
-
-    public abstract void enableTransactions();
-
-    public abstract void refreshDrinkPanel(List<Drink> drinkList);
-
-    public abstract String getInsertedAmount();
-
-    public abstract void dispenseDrink(Drink drink);
+    public void dispenseChange(Coin coin);
     
-    public abstract void dispenseChange(Coin coin);
-    
-    public abstract void dispenseChange(List<Coin> coin);
+    public void dispenseChange(List<Coin> coin);
 
-    public abstract void displayChange(int originalChange, int changeAvailable);
+    public void displayChange(int originalChange, int changeAvailable);
 
-    public abstract void resetState();
+    public void resetState();
 
-    public abstract void enableTerminateButton();
+    public void enableTerminateButton();
 
-    public abstract void terminateTransaction();
+    public void terminateTransaction();
 
-    public abstract void show();
+    public void show();
 
-    public abstract void hide();
+    public void hide();
 
-    public abstract void refresh();
+    public void refresh();
 
 }

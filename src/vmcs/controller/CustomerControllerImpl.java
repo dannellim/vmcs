@@ -24,16 +24,18 @@ import vmcs.util.CurrencyHelper;
  *
  * @author Dannel
  */
-public class CustomerControllerImpl extends CustomerController implements CoinInterfaceListener, DrinkInterfaceListener {
+public class CustomerControllerImpl implements CustomerController, CoinInterfaceListener, DrinkInterfaceListener {
 
     private TransactionOriginator transactionCoinOriginator;
     private TransactionCaretaker transactionCoinCaretaker;
     private Drink selectedDrink;
 
+    private final CustomerPanel customerPanel;
+
     public CustomerControllerImpl(CustomerPanel customerPanel) {
-        super(customerPanel);
         MachineFactory.getMachine().addNewCoinInterfaceStatListener(this);
         MachineFactory.getMachine().addNewDrinkInterfaceStatListener(this);
+        this.customerPanel = customerPanel;
     }
 
     @Override
@@ -77,10 +79,12 @@ public class CustomerControllerImpl extends CustomerController implements CoinIn
 
     @Override
     public void onCoinAccepted(Coin coin) {
-        customerPanel.updateInsertedAmount(coin.getValue());
-        transactionCoinOriginator.setStock(coin);
-        transactionCoinCaretaker.addMemento(transactionCoinOriginator.saveStateToMemento());
-        checkAmountSufficiency();
+        if (transactionCoinOriginator != null) {
+            customerPanel.updateInsertedAmount(coin.getValue());
+            transactionCoinOriginator.setStock(coin);
+            transactionCoinCaretaker.addMemento(transactionCoinOriginator.saveStateToMemento());
+            checkAmountSufficiency();
+        }
     }
 
     @Override
