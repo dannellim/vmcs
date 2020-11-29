@@ -12,6 +12,7 @@ import vmcs.util.CurrencyHelper;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -36,7 +37,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
     private String PASSWORD = "123";
     private Drink selectedDrink;
     private MaintainerController maintainerController;
-    
+
     private static volatile MaintenancePanel sSoleInstance;
 
     public static MaintenancePanel getInstance() {
@@ -325,13 +326,13 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         jPanel7.setVisible(false);
         jPanel8.setVisible(false);
         jPanel9.setVisible(false);
-        //CustomerControllerImpl.get().enableTransactions();
+        CustomerPanelImpl.getInstance().enableTerminateButton();
     }
 
     @Override
     public void unlock() {
         resetPassword();
-        //CustomerControllerImpl.get().terminateTransaction();
+        CustomerPanelImpl.getInstance().terminateTransaction();
         // MachineryController.get().unLockDoor();
         jLabel4.setVisible(true);
         coinPanel.setVisible(true);
@@ -342,7 +343,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         jPanel7.setVisible(true);
         jPanel8.setVisible(true);
         jPanel9.setVisible(true);
-        //CustomerControllerImpl.get().disableTransactions();
+        CustomerPanelImpl.getInstance().disableTransactions();
     }
 
     @Override

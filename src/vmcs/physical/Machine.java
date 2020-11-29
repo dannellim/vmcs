@@ -4,6 +4,7 @@ import java.util.List;
 import vmcs.model.Coin;
 import vmcs.model.DoorState;
 import vmcs.model.Drink;
+import vmcs.model.MaintainerState;
 
 public interface Machine {
 

@@ -2,17 +2,13 @@ package vmcs.controller;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import vmcs.model.Coin;
 import vmcs.model.DoorState.DoorStateChangeListener;
 import vmcs.model.Drink;
-import vmcs.model.Stock;
 import vmcs.physical.CoinInterface.CoinInterfaceListener;
 import vmcs.physical.DrinkInterface.DrinkInterfaceListener;
 import vmcs.physical.MachineImpl;
 import vmcs.ui.MachineryPanel;
-import vmcs.ui.MachineryPanelImpl;
 
 public class MachineryControllerImpl implements CoinInterfaceListener, DoorStateChangeListener, DrinkInterfaceListener, MachineryController {
 
