@@ -217,7 +217,8 @@ public class SimulatorControlPanelImpl extends SimulatorControlPanel {
     @Override
     public void endSim() {
         CustomerPanelImpl.getInstance().hide();
-        MachineryPanelImpl.getInstance().hide();
+        MaintenancePanelImpl.getInstance().hide();
+        MaintenancePanelImpl.getInstance().hide();
         disableSimulator();
         saveProperties();
     }
