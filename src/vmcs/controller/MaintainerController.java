@@ -1,9 +1,6 @@
 package vmcs.controller;
 
 import vmcs.model.Drink;
-import vmcs.model.Stock;
-
-import java.util.List;
 
 public interface MaintainerController {
     void setSelectedDrink(Drink drink);

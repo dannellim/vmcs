@@ -6,13 +6,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
 import vmcs.physical.MachineImpl;
 import vmcs.ui.CustomerPanelImpl;
-import vmcs.ui.SimulatorControlPanel;
-import vmcs.ui.SimulatorControlPanelImpl;
 
 public class CustomerControllerImplTest {
 

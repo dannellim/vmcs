@@ -77,20 +77,17 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
 
     @Override
     public void lockDoor() {
-            MachineImpl.getMachine().lockDoor();
+        MachineImpl.getMachine().lockDoor();
 
     }
 
     @Override
     public void unLockDoor() {
-
-        if(MaintainerState.getInstance().isLogIn()){
+        if (MaintainerState.getInstance().isLogIn()) {
             MachineImpl.getMachine().unlockDoor();
-        }else{
+        } else {
             MachineImpl.getMachine().lockDoor();
-
         }
-
     }
 
     @Override
@@ -117,7 +114,7 @@ public class MachineryControllerImpl implements CoinInterfaceListener, DoorState
 
     @Override
     public void onDoorStateChange(boolean isLock) {
-        System.out.println("Islocked "+isLock);
+        System.out.println("Islocked " + isLock);
         updateUIAccordingToDoorState(isLock);
     }
 

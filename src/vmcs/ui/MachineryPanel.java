@@ -5,6 +5,7 @@
  */
 package vmcs.ui;
 
+import vmcs.controller.MachineryController;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
 
@@ -31,5 +32,7 @@ public interface MachineryPanel {
     void hide();
     
     void refresh();
+    
+    MachineryController getController();
     
 }
