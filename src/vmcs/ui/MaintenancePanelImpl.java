@@ -12,6 +12,7 @@ import vmcs.util.CurrencyHelper;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -20,6 +21,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import vmcs.controller.MaintainerController;
 import vmcs.controller.MaintainerControllerImpl;
+import vmcs.physical.MachineImpl;
 
 /**
  *
@@ -309,7 +311,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
             lock();
         } else {
             JOptionPane.showMessageDialog(null, "Please lock the door first!");
-        } 
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void changeDrinkPrice() {
@@ -328,8 +330,8 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         jPanel7.setVisible(false);
         jPanel8.setVisible(false);
         jPanel9.setVisible(false);
-        CustomerPanelImpl.getInstance().enableTransactions();
         maintainerController.unLogIn();
+        CustomerPanelImpl.getInstance().enableTransactions();
     }
 
     @Override
@@ -369,16 +371,6 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         jTextField3.setText("0 c");
     }
 
-//    private void checkPassword() {
-//        String password = new String(jPasswordField1.getPassword());
-//        if(password.isEmpty() || password == null){
-//          resetPassword();  
-//        } else if (password.equals(PASSWORD)) {
-//            validPassword();
-//        } else {
-//            invalidPassword();
-//        }
-//    }
     @Override
     public void validPassword() {
         jLabel3.setText(VALID_PASSWORD);
@@ -557,5 +549,66 @@ public class MaintenancePanelImpl implements MaintenancePanel {
     @Override
     public MaintainerController getController() {
         return this.maintainerController;
+    }
+
+    @Override
+    public void refreshDrinks(List<Drink> drinkList) {
+        drinkPanel.removeAll();
+        for (Drink drink : drinkList) {
+            JTextField jTextField = new JTextField();
+            jTextField.setEditable(false);
+            jTextField.setBackground(new java.awt.Color(0, 0, 0));
+            jTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+            jTextField.setForeground(new java.awt.Color(255, 255, 255));
+            jTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+            jTextField.setText(String.valueOf(drink.getQuantity()));
+            jTextField.setVisible(false);
+
+            JButton jButton = new JButton();
+            jButton.setFont(new java.awt.Font("Tahoma", 0, 14));
+            jButton.setText(drink.getName().replace("_", " ").toUpperCase());
+            jButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    drinkButton(jTextField, String.valueOf(drink.getValue()));
+                    selectedDrink = drink;
+                    maintainerController.setSelectedDrink(selectedDrink);
+                }
+            });
+
+            drinkPanel.add(jButton);
+            drinkPanel.add(jTextField);
+        }
+        refresh();
+    }
+
+    @Override
+    public void refreshCoins(List<Coin> coins) {
+        coinPanel.removeAll();
+        for (Coin coin : coins) {
+            if (!coin.getName().equalsIgnoreCase("Invalid")) {
+                JTextField jTextField = new JTextField();
+                jTextField.setEditable(false);
+                jTextField.setBackground(new java.awt.Color(0, 0, 0));
+                jTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+                jTextField.setForeground(new java.awt.Color(255, 255, 255));
+                jTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                jTextField.setText(String.valueOf(coin.getQuantity()));
+                jTextField.setVisible(false);
+
+                JButton jButton = new JButton();
+                jButton.setFont(new java.awt.Font("Tahoma", 0, 14));
+                jButton.setText(coin.getName());
+                jButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        coinButton(jTextField);
+                    }
+                });
+                coinPanel.add(jButton);
+                coinPanel.add(jTextField);
+            }
+        }
+        refresh();
     }
 }

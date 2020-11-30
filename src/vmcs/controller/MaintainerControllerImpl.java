@@ -7,6 +7,7 @@ import vmcs.model.Drink;
 import vmcs.model.MaintainerState;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import vmcs.physical.MachineImpl;
@@ -137,14 +138,18 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
         System.out.println("---------------------- MaintainerController UPDATE Start ----------------------");
         if (arg0 instanceof Coin) {
             System.out.println("Coin Update");
-            Iterator<Coin> iterator = MachineImpl.getMachine().getAllCoins().iterator();
+            List<Coin> coins = MachineImpl.getMachine().getAllCoins();
+            maintenancePanel.refreshCoins(coins);
+            Iterator<Coin> iterator = coins.iterator();
             while (iterator.hasNext()) {
                 Coin coin = (Coin) iterator.next();
                 System.out.println(coin.toString());
             }
         } else if (arg0 instanceof Drink) {
             System.out.println("Drink Update");
-            Iterator<Drink> iterator = MachineImpl.getMachine().getAllDrinks().iterator();
+            List<Drink> drinks = MachineImpl.getMachine().getAllDrinks();
+            maintenancePanel.refreshDrinks(drinks);
+            Iterator<Drink> iterator = drinks.iterator();
             while (iterator.hasNext()) {
                 Drink drink = (Drink) iterator.next();
                 System.out.println(drink.toString());

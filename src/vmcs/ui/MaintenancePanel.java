@@ -5,6 +5,7 @@
  */
 package vmcs.ui;
 
+import java.util.List;
 import vmcs.controller.MaintainerController;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
@@ -38,5 +39,9 @@ public interface MaintenancePanel {
     void refresh();
     
     MaintainerController getController();
+    
+    void refreshDrinks(List<Drink> drinks);
+    
+    void refreshCoins(List<Coin> coins);
     
 }

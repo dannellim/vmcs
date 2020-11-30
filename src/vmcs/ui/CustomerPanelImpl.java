@@ -19,6 +19,7 @@ import vmcs.controller.CustomerController;
 import vmcs.controller.CustomerControllerImpl;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
+import vmcs.model.MaintainerState;
 import vmcs.util.CurrencyHelper;
 
 /**
@@ -201,10 +202,7 @@ public class CustomerPanelImpl implements CustomerPanel {
     @Override
     public void refreshDrinkPanel(List<Drink> drinkList) {
         drinkPanel.removeAll();
-        Iterator<Drink> iterator = drinkList.iterator();
-        while (iterator.hasNext()) {
-            Drink drink = iterator.next();
-
+        for(Drink drink: drinkList) {
             JPanel jPanel = new JPanel();
             jPanel.setLayout(new GridLayout());
 
@@ -237,6 +235,9 @@ public class CustomerPanelImpl implements CustomerPanel {
                 jLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.red));
                 jButton.setEnabled(false);
             }
+            
+            if(MaintainerState.getInstance().isLogIn())
+                jButton.setEnabled(false);
 
             jPanel.add(jButton);
             jPanel.add(jTextField);
