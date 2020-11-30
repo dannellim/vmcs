@@ -6,16 +6,20 @@ import vmcs.model.Drink;
 
 import java.util.ArrayList;
 import java.util.List;
+import vmcs.model.FaultState;
 
-public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinInterface.CoinInterfaceListener, Machine, DoorState.DoorStateChangeListener {
+public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinInterface.CoinInterfaceListener, 
+        Machine, DoorState.DoorStateChangeListener, FaultState.FaultStateChangeListener {
 
     private CoinInterface coinInterface;
     private DrinkInterface drinkInterface;
 
     private final DoorState doorState;
+    private final FaultState faultState;
     private final List<CoinInterface.CoinInterfaceListener> coinInterfaceListeners;
     private final List<DrinkInterface.DrinkInterfaceListener> drinksInterfaceListeners;
     private List<DoorState.DoorStateChangeListener> doorStateChangeListeners;
+    private List<FaultState.FaultStateChangeListener> faultStateChangeListeners;
 
     private static volatile Machine sSoleInstance;
 
@@ -41,7 +45,6 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     public void addDoorStateInterfaceStatListener(DoorState.DoorStateChangeListener doorStateChangeListener) {
         if (doorStateChangeListener != null) {
             this.doorStateChangeListeners.add(doorStateChangeListener);
-
         }
     }
 
@@ -56,8 +59,9 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
         coinInterfaceListeners = new ArrayList<>();
         drinksInterfaceListeners = new ArrayList<>();
         doorStateChangeListeners = new ArrayList<>();
+        faultStateChangeListeners = new ArrayList<>();
         doorState = DoorState.getInstance(this);
-
+        faultState = FaultState.getInstance(this);
     }
 
     @Override
@@ -181,4 +185,34 @@ public class MachineImpl implements DrinkInterface.DrinkInterfaceListener, CoinI
     public void dispense(List<Coin> coins) {
         coinInterface.dispense(coins);
     }
+
+    @Override
+    public void onFaultStateChange(boolean isFault) {
+        faultStateChangeListeners.forEach(faultStateChangeListener -> {
+            faultStateChangeListener.onFaultStateChange(isFault);
+        });
+    }
+
+    @Override
+    public void addFaultStateInterfaceStatListener(FaultState.FaultStateChangeListener faultStateChangeListener) {
+        if (faultStateChangeListener != null) {
+            this.faultStateChangeListeners.add(faultStateChangeListener);
+        }
+    }
+
+    @Override
+    public void setFault() {
+        faultState.setFault(true);
+    }
+
+    @Override
+    public void clearFault() {
+        faultState.setFault(false);
+    }
+
+    @Override
+    public boolean isFault() {
+        return faultState.isFault();
+    }
+    
 }

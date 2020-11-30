@@ -4,7 +4,7 @@ import java.util.List;
 import vmcs.model.Coin;
 import vmcs.model.DoorState;
 import vmcs.model.Drink;
-import vmcs.model.MaintainerState;
+import vmcs.model.FaultState;
 
 public interface Machine {
 
@@ -23,6 +23,8 @@ public interface Machine {
     public void dispenseDrink(Drink drink);
 
     public void addDoorStateInterfaceStatListener(DoorState.DoorStateChangeListener doorStateChangeListener);
+    
+    public void addFaultStateInterfaceStatListener(FaultState.FaultStateChangeListener faultStateChangeListener);
 
     public void initStocks(List<Coin> coins, List<Drink> drinks);
 
@@ -39,4 +41,10 @@ public interface Machine {
     public void lockDoor();
 
     public void dispense(List<Coin> coins);
+    
+    public void setFault();
+    
+    public void clearFault();
+    
+    public boolean isFault();
 }

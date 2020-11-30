@@ -9,7 +9,6 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -301,10 +300,9 @@ public class CustomerPanelImpl implements CustomerPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-	jFrame = new javax.swing.JFrame();
         java.awt.GridBagConstraints gridBagConstraints;
 
+		jFrame = new javax.swing.JFrame();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         invalidCoinLabel = new javax.swing.JLabel();
@@ -323,6 +321,7 @@ public class CustomerPanelImpl implements CustomerPanel {
         jLabel7 = new javax.swing.JLabel();
         collectCanTf = new javax.swing.JTextField();
         selectedDrinkLabel = new javax.swing.JLabel();
+        faultButton = new javax.swing.JButton();
 
         jFrame.setTitle("VMCS - Customer Panel");
 
@@ -419,6 +418,13 @@ public class CustomerPanelImpl implements CustomerPanel {
         selectedDrinkLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         selectedDrinkLabel.setPreferredSize(new java.awt.Dimension(0, 20));
 
+        faultButton.setText("Fault Sim");
+        faultButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                faultButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(jFrame.getContentPane());
         jFrame.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -438,7 +444,10 @@ public class CustomerPanelImpl implements CustomerPanel {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(selectedDrinkLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(selectedDrinkLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(faultButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -466,12 +475,21 @@ public class CustomerPanelImpl implements CustomerPanel {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(18, 18, 18)
+                .addComponent(faultButton)
+                .addContainerGap())
         );
 
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void faultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faultButtonActionPerformed
+        // TODO add your handling code here:
+        terminateTransaction();
+        disableTransactions();
+        customerController.setFault();
+    }//GEN-LAST:event_faultButtonActionPerformed
 
     @Override
     public void enableTerminateButton() {
@@ -491,11 +509,12 @@ public class CustomerPanelImpl implements CustomerPanel {
     @Override
     public void refresh() {
         jFrame.pack();
-        jFrame.setLocationRelativeTo(null);
+        //jFrame.setLocationRelativeTo(null);
     }
 
     @Override
     public void show() {
+        jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
     }
 
@@ -508,6 +527,7 @@ public class CustomerPanelImpl implements CustomerPanel {
         terminateTransaction();
     }// GEN-LAST:event_terminateButtonActionPerformed
 
+    @Override
     public CustomerController getController(){
         return this.customerController;
     }
@@ -517,6 +537,7 @@ public class CustomerPanelImpl implements CustomerPanel {
     private javax.swing.JPanel coinPanel;
     private javax.swing.JTextField collectCanTf;
     private javax.swing.JPanel drinkPanel;
+    private javax.swing.JButton faultButton;
     private javax.swing.JTextField insertedAmountTf;
     private javax.swing.JLabel invalidCoinLabel;
     private javax.swing.JLabel jLabel1;
@@ -531,7 +552,7 @@ public class CustomerPanelImpl implements CustomerPanel {
     private javax.swing.JLabel noChangeLabel;
     private javax.swing.JLabel selectedDrinkLabel;
     private javax.swing.JButton terminateButton;
-    private javax.swing.JFrame jFrame;
+	private javax.swing.JFrame jFrame;
     // End of variables declaration//GEN-END:variables
 
 }

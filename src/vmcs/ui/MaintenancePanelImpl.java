@@ -308,7 +308,9 @@ public class MaintenancePanelImpl implements MaintenancePanel {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         if (maintainerController.isLock()) {
+            //maintainerController.unLogIn();
             lock();
+            CustomerPanelImpl.getInstance().enableTransactions();
         } else {
             JOptionPane.showMessageDialog(null, "Please lock the door first!");
         }
@@ -320,6 +322,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
 
     @Override
     public void lock() {
+        maintainerController.unLogIn();
         resetPassword();
         jLabel4.setVisible(false);
         coinPanel.setVisible(false);
@@ -330,8 +333,6 @@ public class MaintenancePanelImpl implements MaintenancePanel {
         jPanel7.setVisible(false);
         jPanel8.setVisible(false);
         jPanel9.setVisible(false);
-        maintainerController.unLogIn();
-        CustomerPanelImpl.getInstance().enableTransactions();
     }
 
     @Override
@@ -532,6 +533,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
 
     @Override
     public void show() {
+        jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
     }
 
@@ -543,7 +545,7 @@ public class MaintenancePanelImpl implements MaintenancePanel {
     @Override
     public void refresh() {
         jFrame.pack();
-        jFrame.setLocationRelativeTo(null);
+        //jFrame.setLocationRelativeTo(null);
     }
 
     @Override

@@ -13,7 +13,9 @@ import java.util.TimerTask;
 import vmcs.memento.TransactionCaretaker;
 import vmcs.memento.TransactionOriginator;
 import vmcs.model.Coin;
+import vmcs.model.DoorState;
 import vmcs.model.Drink;
+import vmcs.model.FaultState;
 import vmcs.physical.CoinInterface.CoinInterfaceListener;
 import vmcs.physical.DrinkInterface.DrinkInterfaceListener;
 import vmcs.physical.MachineImpl;
@@ -24,7 +26,8 @@ import vmcs.util.CurrencyHelper;
  *
  * @author Dannel
  */
-public class CustomerControllerImpl implements CustomerController, CoinInterfaceListener, DrinkInterfaceListener {
+public class CustomerControllerImpl implements CustomerController, CoinInterfaceListener, DrinkInterfaceListener,
+        FaultState.FaultStateChangeListener {
 
     private TransactionOriginator transactionCoinOriginator;
     private TransactionCaretaker transactionCoinCaretaker;
@@ -35,6 +38,7 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
     public CustomerControllerImpl(CustomerPanel customerPanel) {
         MachineImpl.getMachine().addNewCoinInterfaceStatListener(this);
         MachineImpl.getMachine().addNewDrinkInterfaceStatListener(this);
+        MachineImpl.getMachine().addFaultStateInterfaceStatListener(this);
         this.customerPanel = customerPanel;
     }
 
@@ -60,9 +64,9 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
         transactionCoinOriginator = new TransactionOriginator();
         transactionCoinCaretaker = new TransactionCaretaker();
     }
-    
+
     @Override
-    public Drink getSelectedDrink(){
+    public Drink getSelectedDrink() {
         return selectedDrink;
     }
 
@@ -192,5 +196,15 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
     @Override
     public void onDrinkStockChanged(Drink drink) {
         customerPanel.refreshDrinkPanel(MachineImpl.getMachine().getAllDrinks());
+    }
+    
+    @Override
+    public void setFault(){
+        MachineImpl.getMachine().setFault();
+    }
+
+    @Override
+    public void onFaultStateChange(boolean isFault) {
+        System.out.println("Fault: " + isFault);
     }
 }

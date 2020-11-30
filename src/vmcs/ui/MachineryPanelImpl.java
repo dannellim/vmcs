@@ -256,7 +256,6 @@ public class MachineryPanelImpl implements MachineryPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void doorStateCheckBoxItemStateChanged() {// GEN-FIRST:event_doorStateCheckBoxItemStateChanged
-        System.out.println("Here ");
         // TODO add your handling code here:
         if (doorStateCheckBox.isSelected()) {
             machineryController.lockDoor();
@@ -282,6 +281,7 @@ public class MachineryPanelImpl implements MachineryPanel {
 
     @Override
     public void show() {
+        jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
     }
 
@@ -293,7 +293,7 @@ public class MachineryPanelImpl implements MachineryPanel {
     @Override
     public void refresh() {
         jFrame.pack();
-        jFrame.setLocationRelativeTo(null);
+        //jFrame.setLocationRelativeTo(null);
     }
 
     @Override

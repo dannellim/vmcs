@@ -8,7 +8,6 @@ package vmcs.controller;
 import java.util.List;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
-import vmcs.ui.CustomerPanel;
 
 
 /**
@@ -28,4 +27,6 @@ public interface CustomerController {
     public Drink getSelectedDrink();
     
     public void terminateTransaction();
+    
+    public void setFault();
 }

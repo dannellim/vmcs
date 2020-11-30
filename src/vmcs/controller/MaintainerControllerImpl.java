@@ -14,7 +14,8 @@ import vmcs.physical.CoinInterface;
 import vmcs.physical.DrinkInterface;
 import vmcs.physical.MachineImpl;
 
-public class MaintainerControllerImpl implements Observer, MaintainerController, CoinInterface.CoinInterfaceListener, DrinkInterface.DrinkInterfaceListener {
+public class MaintainerControllerImpl implements Observer, MaintainerController, 
+        CoinInterface.CoinInterfaceListener, DrinkInterface.DrinkInterfaceListener {
 
     private final MaintenancePanel maintenancePanel;
     private final PropertiesFactory propertiesFactory;
