@@ -13,7 +13,6 @@ import java.util.TimerTask;
 import vmcs.memento.TransactionCaretaker;
 import vmcs.memento.TransactionOriginator;
 import vmcs.model.Coin;
-import vmcs.model.DoorState;
 import vmcs.model.Drink;
 import vmcs.model.FaultState;
 import vmcs.physical.CoinInterface.CoinInterfaceListener;
