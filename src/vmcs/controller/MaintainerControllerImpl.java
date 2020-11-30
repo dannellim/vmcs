@@ -31,6 +31,11 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     public void setSelectedDrink(Drink drink) {
         selectedDrink = drink;
     }
+    
+    @Override
+    public Drink getSelectedDrink(){
+        return this.selectedDrink;
+    }
 
     @Override
     public void lock() {
@@ -96,10 +101,11 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     }
 
     @Override
-    public void showTotalCashHeld() {
+    public int showTotalCashHeld() {
         int total = 0;
         total = getTotalCash(total);
         maintenancePanel.showTotalCashHeld(total);
+        return total;
     }
 
     private int getTotalCash(int total) {

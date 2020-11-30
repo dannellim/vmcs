@@ -21,7 +21,6 @@ public class CustomerControllerImplTest {
     public void setUp() {
         MachineImpl.getMachine().initStocks(coins, drinks);
         customerController = CustomerPanelImpl.getInstance().getController();
-        System.out.println("1");
     }
 
     @Test
@@ -35,7 +34,6 @@ public class CustomerControllerImplTest {
         assertEquals(customerController.getCoinStocks().size(), 1);
         Coin getCoin = customerController.getCoinStocks().get(0);
         assertEquals(coin, getCoin);
-        System.out.println("2");
     }
 
     @Test
@@ -79,7 +77,6 @@ public class CustomerControllerImplTest {
         assertEquals(customerController.getDrinkStocks().size(), 1);
         Drink getDrink = customerController.getDrinkStocks().get(0);
         assertEquals(drink, getDrink);
-        System.out.println("4");
     }
 
     @Test
@@ -91,7 +88,7 @@ public class CustomerControllerImplTest {
         drink.setValue(1);
         customerController.selectDrink(drink);
         assertNotNull(customerController.getSelectedDrink());
-        System.out.println("5");
+        assertEquals(drink, customerController.getSelectedDrink());
     }
 
     @Test
@@ -119,7 +116,5 @@ public class CustomerControllerImplTest {
         customerController.terminateTransaction();
         assertEquals(customerController.getCoinStocks().get(0).getQuantity(), 1);
         assertNull(customerController.getSelectedDrink());
-
-        System.out.println("6");
     }
 }

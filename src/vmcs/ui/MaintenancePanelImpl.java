@@ -12,7 +12,6 @@ import vmcs.util.CurrencyHelper;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -337,7 +336,6 @@ public class MaintenancePanelImpl implements MaintenancePanel {
     public void unlock() {
         resetPassword();
         CustomerPanelImpl.getInstance().terminateTransaction();
-        // MachineryController.get().unLockDoor();
         jLabel4.setVisible(true);
         coinPanel.setVisible(true);
         jLabel7.setVisible(true);
@@ -554,5 +552,10 @@ public class MaintenancePanelImpl implements MaintenancePanel {
     public void refresh() {
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
+    }
+
+    @Override
+    public MaintainerController getController() {
+        return this.maintainerController;
     }
 }

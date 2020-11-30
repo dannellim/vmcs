@@ -4,6 +4,8 @@ import vmcs.model.Drink;
 
 public interface MaintainerController {
     void setSelectedDrink(Drink drink);
+    
+    Drink getSelectedDrink();
 
     void lock();
 
@@ -19,7 +21,7 @@ public interface MaintainerController {
 
     void collectAllCash();
 
-    void showTotalCashHeld();
+    int showTotalCashHeld();
 
     void changePrice(String newValue);
     

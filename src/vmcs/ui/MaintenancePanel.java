@@ -5,6 +5,7 @@
  */
 package vmcs.ui;
 
+import vmcs.controller.MaintainerController;
 import vmcs.model.Coin;
 import vmcs.model.Drink;
 
@@ -35,5 +36,7 @@ public interface MaintenancePanel {
     void hide();
     
     void refresh();
+    
+    MaintainerController getController();
     
 }
