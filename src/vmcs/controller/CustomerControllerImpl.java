@@ -60,9 +60,15 @@ public class CustomerControllerImpl implements CustomerController, CoinInterface
         transactionCoinOriginator = new TransactionOriginator();
         transactionCoinCaretaker = new TransactionCaretaker();
     }
+    
+    @Override
+    public Drink getSelectedDrink(){
+        return selectedDrink;
+    }
 
     @Override
     public void terminateTransaction() {
+        selectedDrink = null;
         restoreCoinStockAftTermination();
         customerPanel.refreshDrinkPanel(MachineImpl.getMachine().getAllDrinks());
     }

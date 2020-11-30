@@ -25,5 +25,7 @@ public interface CustomerController {
     
     public void selectDrink(Drink drink);
     
+    public Drink getSelectedDrink();
+    
     public void terminateTransaction();
 }

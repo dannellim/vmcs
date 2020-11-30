@@ -49,5 +49,7 @@ public interface CustomerPanel {
     public void hide();
 
     public void refresh();
+    
+    public CustomerController getController();
 
 }

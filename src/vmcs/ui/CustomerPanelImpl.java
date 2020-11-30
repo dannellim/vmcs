@@ -64,6 +64,7 @@ public class CustomerPanelImpl implements CustomerPanel {
         for (Drink drink : this.customerController.getDrinkStocks()) {
             addNewDrink(drink);
         }
+        refresh();
     }
 
     private void addNewCoins(Coin coin) {
@@ -506,6 +507,10 @@ public class CustomerPanelImpl implements CustomerPanel {
         terminateTransaction();
     }// GEN-LAST:event_terminateButtonActionPerformed
 
+    public CustomerController getController(){
+        return this.customerController;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField coinCollectTf;
     private javax.swing.JPanel coinPanel;
