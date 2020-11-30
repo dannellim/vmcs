@@ -10,9 +10,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import vmcs.physical.CoinInterface;
+import vmcs.physical.DrinkInterface;
 import vmcs.physical.MachineImpl;
 
-public class MaintainerControllerImpl implements Observer, MaintainerController {
+public class MaintainerControllerImpl implements Observer, MaintainerController, CoinInterface.CoinInterfaceListener, DrinkInterface.DrinkInterfaceListener {
 
     private final MaintenancePanel maintenancePanel;
     private final PropertiesFactory propertiesFactory;
@@ -20,6 +22,8 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     private Drink selectedDrink;
 
     public MaintainerControllerImpl(MaintenancePanel maintenancePanel) {
+        MachineImpl.getMachine().addNewCoinInterfaceStatListener(this);
+        MachineImpl.getMachine().addNewDrinkInterfaceStatListener(this);
         propertiesFactory = new PropertiesFactory();
         PASSWORD = propertiesFactory.getProperty(PropertiesFactory.MACHINE)
                 .getProperty("password");
@@ -32,9 +36,9 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     public void setSelectedDrink(Drink drink) {
         selectedDrink = drink;
     }
-    
+
     @Override
-    public Drink getSelectedDrink(){
+    public Drink getSelectedDrink() {
         return this.selectedDrink;
     }
 
@@ -50,6 +54,9 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
 
     @Override
     public void logIn() {
+        maintenancePanel.refreshCoins(MachineImpl.getMachine().getAllCoins());
+        maintenancePanel.refreshDrinks(MachineImpl.getMachine().getAllDrinks());
+        MachineImpl.getMachine().unlockDoor();
         MaintainerState.getInstance().setLogIn(true);
     }
 
@@ -64,8 +71,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
             maintenancePanel.resetPassword();
         } else if (validatePassword(password)) {
             maintenancePanel.validPassword();
-            MachineImpl.getMachine().unlockDoor();
-            MaintainerState.getInstance().setLogIn(true);
+            logIn();
         } else {
             maintenancePanel.invalidPassword();
         }
@@ -84,7 +90,7 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
         }
         maintenancePanel.refresh();
     }
-    
+
     private void setCoinStocks() {
         Iterator<Coin> iterator = MachineImpl.getMachine().getAllCoins().iterator();
         while (iterator.hasNext()) {
@@ -139,7 +145,6 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
         if (arg0 instanceof Coin) {
             System.out.println("Coin Update");
             List<Coin> coins = MachineImpl.getMachine().getAllCoins();
-            maintenancePanel.refreshCoins(coins);
             Iterator<Coin> iterator = coins.iterator();
             while (iterator.hasNext()) {
                 Coin coin = (Coin) iterator.next();
@@ -148,7 +153,6 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
         } else if (arg0 instanceof Drink) {
             System.out.println("Drink Update");
             List<Drink> drinks = MachineImpl.getMachine().getAllDrinks();
-            maintenancePanel.refreshDrinks(drinks);
             Iterator<Drink> iterator = drinks.iterator();
             while (iterator.hasNext()) {
                 Drink drink = (Drink) iterator.next();
@@ -161,5 +165,44 @@ public class MaintainerControllerImpl implements Observer, MaintainerController 
     @Override
     public boolean isLock() {
         return MachineImpl.getMachine().isDoorLock();
+    }
+
+    @Override
+    public void onCoinAccepted(Coin coin) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onCoinRejected(Coin coin) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onCoinDispensed(Coin coin) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onCoinDispensed(List<Coin> coin) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onCoinStockChanged(Coin coin) {
+        System.out.println(coin.toString());
+        List<Coin> coins = MachineImpl.getMachine().getAllCoins();
+        maintenancePanel.refreshCoins(coins);
+    }
+
+    @Override
+    public void onDrinkDispensed(Drink drink) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onDrinkStockChanged(Drink drink) {
+        System.out.println(drink.toString());
+        List<Drink> drinks = MachineImpl.getMachine().getAllDrinks();
+        maintenancePanel.refreshDrinks(drinks);
     }
 }
